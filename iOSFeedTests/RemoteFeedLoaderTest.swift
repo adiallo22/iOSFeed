@@ -10,23 +10,32 @@ import XCTest
 import iOSFeed
 
 class HTTPClientSpy: HTTPClient {
-    var requestURL: URL?
-    func get(from url: URL) { requestURL = url }
+    var requestURLs = [URL]()
+    func get(from url: URL) {
+        requestURLs.append(url)
+    }
 }
 
 class RemoteFeedLoaderTests: XCTestCase {
 
     func test_init_doesNotRequestDataFromURL() {
         let (client, _) = makeSUT()
-        XCTAssertNil(client.requestURL)
+        XCTAssertTrue(client.requestURLs.isEmpty)
     }
     
-    func test_init_doesRequestDataFromURL() {
+    func test_load_doesRequestDataFromURL() {
         let mockURL = URL(string: "https://mockurl2.com/api")
         let (client, sut) = makeSUT(url: mockURL)
         sut.load()
-        XCTAssertNotNil(client.requestURL)
-        XCTAssertEqual(mockURL, client.requestURL)
+        XCTAssertEqual(mockURL, client.requestURLs.first)
+    }
+    
+    func test_loadTwice_doesRequestDataFromURLTwice() {
+        let mockURL = URL(string: "https://mockurl2.com/api")
+        let (client, sut) = makeSUT(url: mockURL)
+        sut.load()
+        sut.load()
+        XCTAssertEqual(client.requestURLs, [mockURL, mockURL])
     }
     
     func makeSUT(url: URL? = URL(string: "https://mockurl1.com/api")) -> (HTTPClientSpy, RemoteFeedLoader) {
