@@ -11,7 +11,11 @@ import iOSFeed
 
 class HTTPClientSpy: HTTPClient {
     var requestURLs = [URL]()
-    func get(from url: URL) {
+    var error: Error?
+    func get(from url: URL, completion: @escaping (Error?) -> Void) {
+        if let error = error {
+            completion(error)
+        }
         requestURLs.append(url)
     }
 }
@@ -36,6 +40,16 @@ class RemoteFeedLoaderTests: XCTestCase {
         sut.load()
         sut.load()
         XCTAssertEqual(client.requestURLs, [mockURL, mockURL])
+    }
+    
+    func test_load_deliverErrorOnClientError() {
+        let (client, sut) = makeSUT()
+        client.error = NSError(domain: "test", code: 0, userInfo: nil)
+        var capturedError: RemoteFeedLoader.Error?
+        sut.load { (error) in
+            capturedError = error
+        }
+        XCTAssertEqual(capturedError, .connectivity)
     }
     
     func makeSUT(url: URL? = URL(string: "https://mockurl1.com/api")) -> (HTTPClientSpy, RemoteFeedLoader) {
