@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Feed {
+public struct Feed: Equatable {
     var id: UUID
     var description: String?
     var location: String?
