@@ -9,7 +9,7 @@
 import Foundation
 
 public enum HTTPResponse {
-    case sucess(HTTPURLResponse)
+    case sucess(Data, HTTPURLResponse)
     case failure(Error)
 }
 
