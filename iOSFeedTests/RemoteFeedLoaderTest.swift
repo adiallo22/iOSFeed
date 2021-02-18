@@ -88,27 +88,10 @@ class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_DeliverJsonOnSuccess() {
         let (client, sut) = makeSUT()
-        let item1 = Feed(id: UUID(),
-                         description: nil,
-                         location: nil,
-                         images: URL(string: "url.com")!)
-        let item1JSON = [
-            "id": item1.id.uuidString,
-            "images": item1.images.absoluteString
-        ]
-        let item2 = Feed(id: UUID(),
-                         description: "desc",
-                         location: "loc",
-                         images: URL(string: "url2.com")!)
-        let item2JSON = [
-            "id": item2.id.uuidString,
-            "description": item2.description,
-            "location": item2.location,
-            "images": item2.images.absoluteString
-        ]
-        let itemsJSON = ["items": [item1JSON, item2JSON]]
+        let (item1, item1JSON) = makeItem(id: UUID(), images: URL(string: "url.com")!)
+         let (item2, item2JSON) = makeItem(id: UUID(), description: "", location: "", images: URL(string: "url.com")!)
         expect(sut, toCompleteWith: .success([item1, item2]), when: {
-            let json = try! JSONSerialization.data(withJSONObject: itemsJSON)
+            let json = makeItemJSon([item1JSON, item2JSON])
             client.complete(withStatusCode: 200, data: json)
         })
     }
@@ -130,6 +113,24 @@ class RemoteFeedLoaderTests: XCTestCase {
         sut.load { capturedResult.append($0) }
         action()
         XCTAssertEqual(capturedResult, [result])
+    }
+    
+    fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, images: URL) -> (Feed, [String: Any]) {
+        let item = Feed(id: id, description: description, location: location, images: images)
+        let itemJSON = [
+            "id": id.uuidString,
+            "description": description,
+            "location": location,
+            "images": images.absoluteString
+            ].reduce(into: [String: Any]()) { (acc, e) in
+                if let value = e.value { acc[e.key] = value }
+        }
+        return (item, itemJSON)
+    }
+    
+    fileprivate func makeItemJSon(_ items: [[String: Any]]) -> Data {
+        let itemsJSON = ["items": items]
+        return try! JSONSerialization.data(withJSONObject: itemsJSON)
     }
 
 }
