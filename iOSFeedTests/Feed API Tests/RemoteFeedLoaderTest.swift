@@ -22,7 +22,7 @@ class HTTPClientSpy: HTTPClient {
     func complete(with error: Error, at index: Int = 0) {
         messages[index].completion(.failure(error))
     }
-    func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
+    func complete(withStatusCode code: Int, data: Data, at index: Int = 0) {
         let response = HTTPURLResponse(url: requestedURLs[index],
                                        statusCode: code,
                                        httpVersion: nil,
@@ -64,7 +64,8 @@ class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliverErrorOnNon200HttpResponse() {
         let (client, sut) = makeSUT()
         expect(sut, toCompleteWith: .failure(.invalidData), when: {
-            client.complete(withStatusCode: 400)
+            let json = makeItemJSon([])
+            client.complete(withStatusCode: 400, data: json)
         })
     }
     
@@ -81,7 +82,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         var capturedResult = [RemoteFeedLoader.Result]()
         expect(sut, toCompleteWith: .success([]), when: {
             sut.load { capturedResult.append($0) }
-            let emptyJSON = Data("{\"items\": []}".utf8)
+            let emptyJSON = makeItemJSon([])
             client.complete(withStatusCode: 200, data: emptyJSON)
         })
     }
@@ -96,23 +97,53 @@ class RemoteFeedLoaderTests: XCTestCase {
         })
     }
     
+    func test_load_DoesNotDeliverSuccessAfterSUTisDeallocated() {
+        let client = HTTPClientSpy()
+        let url = URL(string: "url.com")!
+        var sut: RemoteFeedLoader? = RemoteFeedLoader(client: client, url: url)
+        var capturedResult = [RemoteFeedLoader.Result]()
+        sut?.load { capturedResult.append($0) }
+        sut = nil
+        client.complete(withStatusCode: 200, data: makeItemJSon([]))
+        XCTAssertTrue(capturedResult.isEmpty)
+    }
+    
     //MARK: - Helpers
     
-    func makeSUT(url: URL? = URL(string: "https://mockurl1.com/api")) -> (HTTPClientSpy, RemoteFeedLoader) {
+    func makeSUT(url: URL? = URL(string: "https://mockurl1.com/api"),
+                 file: StaticString = #file,
+                 line: UInt = #line) -> (HTTPClientSpy, RemoteFeedLoader) {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(client: client, url: url!)
+        trackForMemoryLeaks(sut)
         return (client, sut)
     }
     
+    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
+        addTeardownBlock { [weak instance] in
+            XCTAssertNil(instance, "Instance is supposed to be deallocated but is retained instead", file: file, line: line)
+        }
+    }
+    
     fileprivate func expect(_ sut: RemoteFeedLoader,
-                            toCompleteWith result: RemoteFeedLoader.Result,
+                            toCompleteWith expectedResult: RemoteFeedLoader.Result,
                             when action: () -> Void,
                             file: StaticString = #file,
                             line: UInt = #line) {
-        var capturedResult = [RemoteFeedLoader.Result]()
-        sut.load { capturedResult.append($0) }
+        let exp = expectation(description: "wait for load to complete")
+        sut.load { receivedResult in
+            switch (expectedResult, receivedResult) {
+            case let (.success(expectedItems), .success(receivedItems)):
+                XCTAssertEqual(expectedItems, receivedItems, file: file, line: line)
+            case let (.failure(expectedError), .failure(receivedError)):
+                XCTAssertEqual(expectedError, receivedError, file: file, line: line)
+            default:
+                XCTFail("Expected: \(expectedResult), but got \(receivedResult)", file: file, line: line)
+            }
+            exp.fulfill()
+        }
         action()
-        XCTAssertEqual(capturedResult, [result])
+        wait(for: [exp], timeout: 2.0)
     }
     
     fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, images: URL) -> (Feed, [String: Any]) {

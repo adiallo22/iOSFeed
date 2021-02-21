@@ -20,13 +20,6 @@ public struct Feed: Decodable, Equatable {
         self.location = location
         self.images = images
     }
-    
-//    private enum CodingKeys: String, CodingKeys {
-//        case id
-//        case description
-//        case location
-//        case url = "image"
-//    }
 }
 
 struct Root: Decodable {
