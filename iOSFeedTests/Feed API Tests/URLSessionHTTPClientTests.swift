@@ -27,7 +27,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURL_PerformsGetRequestWithURL() {
         URLProtocolStubs.startInterceptingRequest()
-        
+
         let url = URL(string: "url.com")!
         let exp = expectation(description: "Wait for expectation")
         URLProtocolStubs.observeRequest { requests in
@@ -35,7 +35,7 @@ class URLSessionHTTPClientTests: XCTestCase {
             XCTAssertEqual(requests.httpMethod, "GET")
             exp.fulfill()
         }
-        URLSessionHTTPClient().get(url: url) { _ in }
+        makeSUT().get(url: url) { _ in }
         wait(for: [exp], timeout: 1.0)
         URLProtocolStubs.stopInterceptingRequest()
     }
@@ -45,11 +45,9 @@ class URLSessionHTTPClientTests: XCTestCase {
         let url = URL(string: "url.com")!
         let error = NSError(domain: "", code: 1, userInfo: nil)
         URLProtocolStubs.stub(data: nil, response: nil, error: error)
-        
-        let sut = URLSessionHTTPClient()
-        
+                
         let exp = expectation(description: "wait for expectation")
-        sut.get(url: url) { (response) in
+        makeSUT().get(url: url) { (response) in
             switch response {
             case .sucess(_, _):
                 XCTFail("expected error with error \(error) but got \(response) instead")
@@ -63,6 +61,12 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     //MARK: - Helpers
+    
+    func makeSUT(file: StaticString = #file, line: UInt = #line) -> URLSessionHTTPClient {
+        let sut = URLSessionHTTPClient()
+        trackForMemoryLeaks(sut,file: file, line: line)
+        return sut
+    }
     
     private class URLProtocolStubs: URLProtocol {
         
