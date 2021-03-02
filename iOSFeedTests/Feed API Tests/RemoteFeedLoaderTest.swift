@@ -89,8 +89,8 @@ class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_DeliverJsonOnSuccess() {
         let (client, sut) = makeSUT()
-        let (item1, item1JSON) = makeItem(id: UUID(), images: URL(string: "url.com")!)
-         let (item2, item2JSON) = makeItem(id: UUID(), description: "", location: "", images: URL(string: "url.com")!)
+        let (item1, item1JSON) = makeItem(id: UUID(), imageURL: URL(string: "url.com")!)
+        let (item2, item2JSON) = makeItem(id: UUID(), description: "", location: "", imageURL: URL(string: "url.com")!)
         expect(sut, toCompleteWith: .success([item1, item2]), when: {
             let json = makeItemJSon([item1JSON, item2JSON])
             client.complete(withStatusCode: 200, data: json)
@@ -140,13 +140,13 @@ class RemoteFeedLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 2.0)
     }
     
-    fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, images: URL) -> (Feed, [String: Any]) {
-        let item = Feed(id: id, description: description, location: location, images: images)
+    fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (Feed, [String: Any]) {
+        let item = Feed(id: id, description: description, location: location, imageURL: imageURL)
         let itemJSON = [
             "id": id.uuidString,
             "description": description,
             "location": location,
-            "images": images.absoluteString
+            "imageURL": imageURL.absoluteString
             ].reduce(into: [String: Any]()) { (acc, e) in
                 if let value = e.value { acc[e.key] = value }
         }

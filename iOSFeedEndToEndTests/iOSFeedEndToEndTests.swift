@@ -14,7 +14,7 @@ class iOSFeedEndToEndTests: XCTestCase {
     func test_EndToEndServerGetFeedResult_matchesFixedTestAccountData() {
         let expectedResult = getFeedResult()
         switch expectedResult {
-        case .success(items):
+        case .success(let items):
             XCTAssertEqual(items.count, 8)
             XCTAssertEqual(items[0], expectedItem(at: 0))
             XCTAssertEqual(items[1], expectedItem(at: 1))
@@ -26,6 +26,8 @@ class iOSFeedEndToEndTests: XCTestCase {
             XCTAssertEqual(items[7], expectedItem(at: 7))
         case .failure(let error):
             XCTFail("expected to get success, but got failure with \(error) instead")
+        default:
+            XCTFail("expected to get success, but got default instead")
         }
     }
     
@@ -40,7 +42,7 @@ class iOSFeedEndToEndTests: XCTestCase {
         trackForMemoryLeaks(client, file: file, line: line)
         trackForMemoryLeaks(loader, file: file, line: line)
         
-        let expectedResult: FeedLoadResult?
+        var expectedResult: FeedLoadResult?
         let exp = expectation(description: "wait for result")
         loader.load { (result) in
             expectedResult = result
@@ -54,7 +56,7 @@ class iOSFeedEndToEndTests: XCTestCase {
         return Feed(id: id(at: index),
                     description: description(at: index),
                     location: location(at: index),
-                    images: imageURL(at: index))
+                    imageURL: imageURL(at: index))
     }
     
     private func id(at index: Int) -> UUID {
