@@ -11,9 +11,17 @@ import iOSFeed
 
 class URLSessionHTTPClientTests: XCTestCase {
     
-    func test_getFromURL_PerformsGetRequestWithURL() {
+    override func setUp() {
+        super.setUp()
         URLProtocolStubs.startInterceptingRequest()
-
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        URLProtocolStubs.stopInterceptingRequest()
+    }
+    
+    func test_getFromURL_PerformsGetRequestWithURL() {
         let exp = expectation(description: "Wait for expectation")
         URLProtocolStubs.observeRequest { [weak self] requests in
             XCTAssertEqual(requests.url, self?.anyURL())
@@ -22,7 +30,6 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
         makeSUT().get(from: anyURL()) { _ in }
         wait(for: [exp], timeout: 1.0)
-        URLProtocolStubs.stopInterceptingRequest()
     }
     
     func test_getfromURL_failsOnRequestError() {
@@ -83,8 +90,6 @@ class URLSessionHTTPClientTests: XCTestCase {
                                 error: Error?,
                                 file: StaticString = #file,
                                 line: UInt = #line) -> Error? {
-        URLProtocolStubs.startInterceptingRequest()
-        
         let result = resultFor(data: data, response: response, error: error, file: file, line: line)
         
         switch result {
@@ -94,8 +99,6 @@ class URLSessionHTTPClientTests: XCTestCase {
             XCTFail("expected failure but got \(String(describing: response)) instead", file: file, line: line)
             return nil
         }
-        
-        URLProtocolStubs.stopInterceptingRequest()
     }
     
     private func resultValuesFor(data: Data?,
@@ -103,8 +106,6 @@ class URLSessionHTTPClientTests: XCTestCase {
                                 error: Error?,
                                 file: StaticString = #file,
                                 line: UInt = #line) -> (Data, HTTPURLResponse)? {
-        URLProtocolStubs.startInterceptingRequest()
-        
         let result = resultFor(data: data, response: response, error: error, file: file, line: line)
         switch result {
         case let .sucess(data, resp):
@@ -113,7 +114,6 @@ class URLSessionHTTPClientTests: XCTestCase {
             XCTFail("expected success but got \(String(describing: response)) instead", file: file, line: line)
             return nil
         }
-        URLProtocolStubs.stopInterceptingRequest()
     }
     
     private func resultFor(data: Data?,
