@@ -56,7 +56,7 @@ class iOSFeedEndToEndTests: XCTestCase {
         return Feed(id: id(at: index),
                     description: description(at: index),
                     location: location(at: index),
-                    imageURL: imageURL(at: index))
+                    image: image(at: index))
     }
     
     private func id(at index: Int) -> UUID {
@@ -98,7 +98,7 @@ class iOSFeedEndToEndTests: XCTestCase {
         ][index]
     }
 
-    private func imageURL(at index: Int) -> URL {
+    private func image(at index: Int) -> URL {
         return URL(string: "https://url-\(index+1).com")!
     }
 
