@@ -14,13 +14,16 @@ class FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
     var deletionCompletions = [DeletionCompletion]()
     
-    var insertions = [(items: [Feed], timstamp: Date)]()
+    private(set) var receivedMessages = [ReceivedMessage]()
     
-    var deleteCacheFeedLoadCount = 0
-    
+    enum ReceivedMessage: Equatable {
+        case deleteCacheFeed
+        case insert([Feed], Date)
+    }
+        
     func deleteCacheFeed(completion: @escaping DeletionCompletion) {
-        deleteCacheFeedLoadCount += 1
         deletionCompletions.append(completion)
+        receivedMessages.append(.deleteCacheFeed)
     }
     
     func completeDeletion(with error: Error, at index: Int = 0) {
@@ -32,7 +35,7 @@ class FeedStore {
     }
     
     func insert(_ items: [Feed], timestamp: Date) {
-        insertions.append((items: items, timstamp: timestamp))
+        receivedMessages.append(.insert(items, timestamp))
     }
     
 }
@@ -45,11 +48,12 @@ class LocalFeedLoad {
         self.currentDate = currentDate
     }
     
-    func saveOnCache(_ feeds: [Feed]) {
+    func saveOnCache(_ feeds: [Feed], completion: @escaping (Error?) -> Void) {
         store.deleteCacheFeed { [unowned self] error in
             if error == nil {
                 self.store.insert(feeds, timestamp: self.currentDate())
             }
+            completion(error)
         }
     }
 }
@@ -58,16 +62,16 @@ class FeedCachesUseCaseTest: XCTestCase {
     
     func test_init_doesNotDeleteCacheUponCreation() {
         let (feed, _) = makeSUT()
-        XCTAssertEqual(feed.deleteCacheFeedLoadCount, 0)
+        XCTAssertEqual(feed.receivedMessages, [])
     }
     
     func test_save_requestCacheDeletion() {
         let (feed, sut) = makeSUT()
         let feedItems = [anyFeed(), anyFeed()]
         
-        sut.saveOnCache(feedItems)
+        sut.saveOnCache(feedItems) { _ in }
         
-        XCTAssertEqual(feed.deleteCacheFeedLoadCount, 1)
+        XCTAssertEqual(feed.receivedMessages, [.deleteCacheFeed])
     }
     
     func test_save_doesNotRequestSaveOnCacheUponDeletionError() {
@@ -75,20 +79,10 @@ class FeedCachesUseCaseTest: XCTestCase {
         let feedItems = [anyFeed(), anyFeed()]
         let error = anyError()
         
-        sut.saveOnCache(feedItems)
+        sut.saveOnCache(feedItems) { _ in }
         feed.completeDeletion(with: error)
         
-        XCTAssertEqual(feed.insertions.count, 0)
-    }
-    
-    func test_save_insertItemsInCacheWhenNoDeletionError() {
-        let (feed, sut) = makeSUT()
-        let feedItems = [anyFeed(), anyFeed()]
-        
-        sut.saveOnCache(feedItems)
-        feed.completeDeletionSuccessfully()
-        
-        XCTAssertEqual(feed.insertions.count, 1)
+        XCTAssertEqual(feed.receivedMessages, [.deleteCacheFeed])
     }
     
     func test_save_insertItemsInCacheWithTimeStampWhenNoDeletionError() {
@@ -96,12 +90,27 @@ class FeedCachesUseCaseTest: XCTestCase {
         let (feed, sut) = makeSUT { timestamp }
         let feedItems = [anyFeed(), anyFeed()]
         
-        sut.saveOnCache(feedItems)
+        sut.saveOnCache(feedItems) { _ in }
         feed.completeDeletionSuccessfully()
         
-        XCTAssertEqual(feed.insertions.count, 1)
-        XCTAssertEqual(feed.insertions.first?.items, feedItems)
-        XCTAssertEqual(feed.insertions.first?.timstamp, timestamp)
+        XCTAssertEqual(feed.receivedMessages, [.deleteCacheFeed, .insert(feedItems, timestamp)])
+    }
+    
+    func test_save_failsOnDeletionError() {
+        let (feed, sut) = makeSUT()
+        let feedItems = [anyFeed(), anyFeed()]
+        let deletionError = anyError()
+        let exp = expectation(description: "wait for saving")
+        
+        var receivedError: Error?
+        sut.saveOnCache(feedItems) { error in
+            receivedError = error
+            exp.fulfill()
+        }
+        feed.completeDeletion(with: deletionError)
+        wait(for: [exp], timeout: 1.0)
+        
+        XCTAssertEqual(receivedError as NSError?, deletionError as NSError)
     }
     
 }
