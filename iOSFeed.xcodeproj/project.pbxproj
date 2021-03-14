@@ -93,7 +93,6 @@
 			isa = PBXGroup;
 			children = (
 				C03C4E1025EC3E1C00D22C84 /* XCTestCase+MemoryLeak.swift */,
-				C0F2265325FEB4FD00882EB2 /* RemoteFeedLoaderTest.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -141,6 +140,7 @@
 		C0EDA0ED25D38B0A00C1B9E6 /* iOSFeedTests */ = {
 			isa = PBXGroup;
 			children = (
+				C03C4E0F25EC3DF000D22C84 /* Helpers */,
 				C0F2264425FEB1B800882EB2 /* New Group */,
 				C0EDA10325DF60D900C1B9E6 /* Feed API Tests */,
 				C0EDA0F025D38B0A00C1B9E6 /* Info.plist */,
@@ -171,8 +171,8 @@
 		C0EDA10325DF60D900C1B9E6 /* Feed API Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C03C4E0F25EC3DF000D22C84 /* Helpers */,
 				C03C4E0D25E4881600D22C84 /* URLSessionHTTPClientTests.swift */,
+				C0F2265325FEB4FD00882EB2 /* RemoteFeedLoaderTest.swift */,
 			);
 			path = "Feed API Tests";
 			sourceTree = "<group>";
