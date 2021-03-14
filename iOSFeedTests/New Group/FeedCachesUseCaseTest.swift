@@ -10,10 +10,30 @@ import XCTest
 import iOSFeed
 
 class FeedStore {
+    
+    typealias DeletionCompletion = (Error?) -> Void
+    var deletionCompletions = [DeletionCompletion]()
+    
     var deleteCacheFeedLoadCount = 0
-    func deleteCacheFeed() {
+    var insertCallCount = 0
+    
+    func deleteCacheFeed(completion: @escaping DeletionCompletion) {
         deleteCacheFeedLoadCount += 1
+        deletionCompletions.append(completion)
     }
+    
+    func completeDeletion(with error: Error, at index: Int = 0) {
+        deletionCompletions[index](error)
+    }
+    
+    func completeDeletionSuccessfully(at index: Int = 0) {
+        deletionCompletions[index](nil)
+    }
+    
+    func insert(_ items: [Feed]) {
+        insertCallCount += 1
+    }
+    
 }
 
 class LocalFeedLoad {
@@ -23,7 +43,11 @@ class LocalFeedLoad {
     }
     
     func saveOnCache(_ feeds: [Feed]) {
-        store.deleteCacheFeed()
+        store.deleteCacheFeed { [unowned self] error in
+            if error == nil {
+                self.store.insert(feeds)
+            }
+        }
     }
 }
 
@@ -37,9 +61,31 @@ class FeedCachesUseCaseTest: XCTestCase {
     func test_save_requestCacheDeletion() {
         let (feed, sut) = makeSUT()
         let feedItems = [anyFeed(), anyFeed()]
+        
         sut.saveOnCache(feedItems)
         
         XCTAssertEqual(feed.deleteCacheFeedLoadCount, 1)
+    }
+    
+    func test_save_doesNotRequestSaveOnCacheUponDeletionError() {
+        let (feed, sut) = makeSUT()
+        let feedItems = [anyFeed(), anyFeed()]
+        let error = anyError()
+        
+        sut.saveOnCache(feedItems)
+        feed.completeDeletion(with: error)
+        
+        XCTAssertEqual(feed.insertCallCount, 0)
+    }
+    
+    func test_save_insertItemsInCacheWhenNoDeletionError() {
+        let (feed, sut) = makeSUT()
+        let feedItems = [anyFeed(), anyFeed()]
+        
+        sut.saveOnCache(feedItems)
+        feed.completeDeletionSuccessfully()
+        
+        XCTAssertEqual(feed.insertCallCount, 1)
     }
     
 }
@@ -62,6 +108,10 @@ extension FeedCachesUseCaseTest {
     
     func anyFeed() -> Feed {
         Feed(id: UUID(), description: "", location: "", image: anyURL())
+    }
+    
+    func anyError() -> Error {
+        NSError(domain: "any error", code: 0, userInfo: nil)
     }
     
 }
