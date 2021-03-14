@@ -14,6 +14,9 @@ class FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
     var deletionCompletions = [DeletionCompletion]()
     
+    typealias InsertionCompletion = (Error?) -> Void
+    var insertionCompletions = [InsertionCompletion]()
+    
     private(set) var receivedMessages = [ReceivedMessage]()
     
     enum ReceivedMessage: Equatable {
@@ -34,8 +37,13 @@ class FeedStore {
         deletionCompletions[index](nil)
     }
     
-    func insert(_ items: [Feed], timestamp: Date) {
+    func insert(_ items: [Feed], timestamp: Date, completion: @escaping InsertionCompletion) {
         receivedMessages.append(.insert(items, timestamp))
+        insertionCompletions.append(completion)
+    }
+    
+    func completeInsertion(with error: Error, at index: Int = 0) {
+        insertionCompletions[index](error)
     }
     
 }
@@ -51,9 +59,10 @@ class LocalFeedLoad {
     func saveOnCache(_ feeds: [Feed], completion: @escaping (Error?) -> Void) {
         store.deleteCacheFeed { [unowned self] error in
             if error == nil {
-                self.store.insert(feeds, timestamp: self.currentDate())
+                self.store.insert(feeds, timestamp: self.currentDate(), completion: completion)
+            } else {
+                completion(error)
             }
-            completion(error)
         }
     }
 }
@@ -108,6 +117,24 @@ class FeedCachesUseCaseTest: XCTestCase {
             exp.fulfill()
         }
         feed.completeDeletion(with: deletionError)
+        wait(for: [exp], timeout: 1.0)
+        
+        XCTAssertEqual(receivedError as NSError?, deletionError as NSError)
+    }
+    
+    func test_save_failsOnInsertionnError() {
+        let (feed, sut) = makeSUT()
+        let feedItems = [anyFeed(), anyFeed()]
+        let deletionError = anyError()
+        let exp = expectation(description: "wait for saving")
+        
+        var receivedError: Error?
+        sut.saveOnCache(feedItems) { error in
+            receivedError = error
+            exp.fulfill()
+        }
+        feed.completeDeletionSuccessfully()
+        feed.completeInsertion(with: deletionError)
         wait(for: [exp], timeout: 1.0)
         
         XCTAssertEqual(receivedError as NSError?, deletionError as NSError)
