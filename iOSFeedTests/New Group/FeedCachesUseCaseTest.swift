@@ -9,12 +9,17 @@
 import XCTest
 import iOSFeed
 
-class FeedStore {
-    
+protocol FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
-    var deletionCompletions = [DeletionCompletion]()
-    
     typealias InsertionCompletion = (Error?) -> Void
+    
+    func deleteCacheFeed(completion: @escaping DeletionCompletion)
+    func insert(_ items: [Feed], timestamp: Date, completion: @escaping InsertionCompletion)
+}
+
+class FeedStoreSpy: FeedStore {
+    
+    var deletionCompletions = [DeletionCompletion]()
     var insertionCompletions = [InsertionCompletion]()
     
     private(set) var receivedMessages = [ReceivedMessage]()
@@ -53,9 +58,9 @@ class FeedStore {
 }
 
 class LocalFeedLoad {
-    private let store: FeedStore
+    private let store: FeedStoreSpy
     private let currentDate: () -> Date
-    init(store: FeedStore, currentDate: @escaping () -> Date) {
+    init(store: FeedStoreSpy, currentDate: @escaping () -> Date) {
         self.store = store
         self.currentDate = currentDate
     }
@@ -163,8 +168,8 @@ extension FeedCachesUseCaseTest {
     
     func makeSUT(currentDate: @escaping () -> Date = Date.init,
                  file: StaticString = #file,
-                 line: UInt = #line) -> (store: FeedStore, sut: LocalFeedLoad) {
-        let store = FeedStore()
+                 line: UInt = #line) -> (store: FeedStoreSpy, sut: LocalFeedLoad) {
+        let store = FeedStoreSpy()
         let sut = LocalFeedLoad(store: store, currentDate: currentDate)
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
