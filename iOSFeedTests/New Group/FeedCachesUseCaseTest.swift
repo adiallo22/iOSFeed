@@ -9,14 +9,6 @@
 import XCTest
 import iOSFeed
 
-protocol FeedStore {
-    typealias DeletionCompletion = (Error?) -> Void
-    typealias InsertionCompletion = (Error?) -> Void
-    
-    func deleteCacheFeed(completion: @escaping DeletionCompletion)
-    func insert(_ items: [Feed], timestamp: Date, completion: @escaping InsertionCompletion)
-}
-
 class FeedStoreSpy: FeedStore {
     
     var deletionCompletions = [DeletionCompletion]()
@@ -55,29 +47,6 @@ class FeedStoreSpy: FeedStore {
         insertionCompletions[index](nil)
     }
     
-}
-
-class LocalFeedLoad {
-    private let store: FeedStoreSpy
-    private let currentDate: () -> Date
-    init(store: FeedStoreSpy, currentDate: @escaping () -> Date) {
-        self.store = store
-        self.currentDate = currentDate
-    }
-    
-    func saveOnCache(_ feeds: [Feed], completion: @escaping (Error?) -> Void) {
-        store.deleteCacheFeed { [weak self] error in
-            guard let self = self else { return }
-            if let err = error {
-                completion(err)
-            } else {
-                self.store.insert(feeds, timestamp: self.currentDate()) { [weak self] error in
-                    guard self != nil else { return }
-                    completion(error)
-                }
-            }
-        }
-    }
 }
 
 class FeedCachesUseCaseTest: XCTestCase {
