@@ -23,5 +23,5 @@ public struct Feed: Decodable, Equatable {
 }
 
 struct Root: Decodable {
-    var items: [Feed]
+    var items: [RemoteFeedItem]
 }
