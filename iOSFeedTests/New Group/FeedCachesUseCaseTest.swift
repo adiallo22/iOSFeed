@@ -18,7 +18,7 @@ class FeedStoreSpy: FeedStore {
     
     enum ReceivedMessage: Equatable {
         case deleteCacheFeed
-        case insert([Feed], Date)
+        case insert([LocalFeedItem], Date)
     }
         
     func deleteCacheFeed(completion: @escaping DeletionCompletion) {
@@ -34,7 +34,7 @@ class FeedStoreSpy: FeedStore {
         deletionCompletions[index](nil)
     }
     
-    func insert(_ items: [Feed], timestamp: Date, completion: @escaping InsertionCompletion) {
+    func insert(_ items: [LocalFeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
         receivedMessages.append(.insert(items, timestamp))
         insertionCompletions.append(completion)
     }
@@ -80,11 +80,17 @@ class FeedCachesUseCaseTest: XCTestCase {
         let timestamp = Date()
         let (feed, sut) = makeSUT { timestamp }
         let feedItems = [anyFeed(), anyFeed()]
+        let localFeedItems = feedItems.map {
+            LocalFeedItem(id: $0.id,
+                          description: $0.description,
+                          location: $0.location,
+                          image: $0.image)
+        }
         
         sut.saveOnCache(feedItems) { _ in }
         feed.completeDeletionSuccessfully()
         
-        XCTAssertEqual(feed.receivedMessages, [.deleteCacheFeed, .insert(feedItems, timestamp)])
+        XCTAssertEqual(feed.receivedMessages, [.deleteCacheFeed, .insert(localFeedItems, timestamp)])
     }
     
     func test_save_failsOnDeletionError() {
@@ -119,7 +125,7 @@ class FeedCachesUseCaseTest: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoad? = LocalFeedLoad(store: store, currentDate: Date.init)
         
-        var receivedResults = [Error?]()
+        var receivedResults = [LocalFeedLoad.SaveResult]()
         sut?.saveOnCache([anyFeed()]) { receivedResults.append($0) }
         
         sut = nil
@@ -132,7 +138,7 @@ class FeedCachesUseCaseTest: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoad? = LocalFeedLoad(store: store, currentDate: Date.init)
         
-        var receivedResults = [Error?]()
+        var receivedResults = [LocalFeedLoad.SaveResult]()
         sut?.saveOnCache([anyFeed()]) { receivedResults.append($0) }
         
         store.completeDeletionSuccessfully()
