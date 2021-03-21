@@ -8,7 +8,7 @@
 
 import Foundation
 
-final public class LocalFeedLoad {
+final public class LocalFeedImage {
     
     private let store: FeedStore
     private let currentDate: () -> Date
@@ -40,9 +40,9 @@ final public class LocalFeedLoad {
 }
 
 private extension Array where Element == FeedImage {
-    func toLocal() -> [LocalFeedImage] {
+    func toLocal() -> [LocalFeedItem] {
         map {
-            LocalFeedImage(
+            LocalFeedItem(
                 id: $0.id,
                 description: $0.description,
                 location: $0.description,

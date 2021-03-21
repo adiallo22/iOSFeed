@@ -18,7 +18,7 @@ class FeedStoreSpy: FeedStore {
     
     enum ReceivedMessage: Equatable {
         case deleteCacheFeed
-        case insert([LocalFeedItem], Date)
+        case insert([LocalFeedImage], Date)
     }
         
     func deleteCacheFeed(completion: @escaping DeletionCompletion) {
@@ -34,7 +34,7 @@ class FeedStoreSpy: FeedStore {
         deletionCompletions[index](nil)
     }
     
-    func insert(_ items: [LocalFeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+    func insert(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
         receivedMessages.append(.insert(items, timestamp))
         insertionCompletions.append(completion)
     }
@@ -178,14 +178,14 @@ extension FeedCachesUseCaseTest {
         URL(string: "http://anyurl.com")!
     }
     
-    func anyFeed() -> Feed {
-        Feed(id: UUID(), description: "", location: "", image: anyURL())
+    func anyFeed() -> FeedImage {
+        FeedImage(id: UUID(), description: "", location: "", image: anyURL())
     }
     
-    func uniqueItems() -> (models: [Feed], local: [LocalFeedItem]) {
+    func uniqueItems() -> (models: [FeedImage], local: [LocalFeedImage]) {
         let feedItems = [anyFeed(), anyFeed()]
         let localFeedItems = feedItems.map {
-            LocalFeedItem(id: $0.id,
+            LocalFeedImage(id: $0.id,
                           description: $0.description,
                           location: $0.location,
                           image: $0.image)

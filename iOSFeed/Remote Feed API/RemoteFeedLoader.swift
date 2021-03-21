@@ -43,10 +43,10 @@ public final class RemoteFeedLoader: FeedLoader {
     }
 }
 
-private extension Array where Element == RemoteFeedItem {
-    func toFeed() -> [Feed] {
+private extension Array where Element == RemoteFeedImage {
+    func toFeed() -> [FeedImage] {
         map {
-            Feed(id: $0.id,
+            FeedImage(id: $0.id,
                  description: $0.description,
                  location: $0.location,
                  image: $0.image)

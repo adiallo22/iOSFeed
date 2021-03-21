@@ -140,8 +140,8 @@ class RemoteFeedLoaderTests: XCTestCase {
         wait(for: [exp], timeout: 2.0)
     }
     
-    fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, image: URL) -> (Feed, [String: Any]) {
-        let item = Feed(id: id, description: description, location: location, image: image)
+    fileprivate func makeItem(id: UUID, description: String? = nil, location: String? = nil, image: URL) -> (FeedImage, [String: Any]) {
+        let item = FeedImage(id: id, description: description, location: location, image: image)
         let itemJSON = [
             "id": id.uuidString,
             "description": description,
