@@ -12,8 +12,16 @@ import iOSFeed
 class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
     func test_init_doesNotDeleteCacheUponCreation() {
-        let (feed, _) = makeSUT()
-        XCTAssertEqual(feed.receivedMessages, [])
+        let (store, _) = makeSUT()
+        XCTAssertEqual(store.receivedMessages, [])
+    }
+    
+    func test_load_requestCacheRetrieval() {
+        let (store, sut) = makeSUT()
+        
+        sut.load()
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
 
 }
