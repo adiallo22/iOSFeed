@@ -65,10 +65,10 @@ final public class LocalFeedLoad {
     private func validate(_ timestamp: Date) -> Bool {
         guard let maxedAged = calendar.date(byAdding: .day,
                                             value: maxDaysAllowedForCache,
-                                            to: timestamp) else {
+                                            to: timestamp) else { //add 7 days to the current calendar retrieved
             return false
         }
-        return currentDate() < maxedAged
+        return currentDate() < maxedAged //return true if current date is max age allow     &   false if current date is more than max allow
     }
 }
 
