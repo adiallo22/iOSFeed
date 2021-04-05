@@ -75,9 +75,9 @@ class FeedCachesUseCaseTest: XCTestCase {
     
     func test_save_doesNotDeliverDeletionErrorWhenSUTInstanceIsDeallocated() {
         let store = FeedStoreSpy()
-        var sut: LocalFeedLoad? = LocalFeedLoad(store: store, currentDate: Date.init)
+        var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
-        var receivedResults = [LocalFeedLoad.SaveResult]()
+        var receivedResults = [LocalFeedLoader.SaveResult]()
         sut?.saveOnCache(uniqueItems().models) { receivedResults.append($0) }
         
         sut = nil
@@ -88,9 +88,9 @@ class FeedCachesUseCaseTest: XCTestCase {
     
     func test_save_doesNotDeliverInsertionErrorWhenSUTInstanceIsDeallocated() {
         let store = FeedStoreSpy()
-        var sut: LocalFeedLoad? = LocalFeedLoad(store: store, currentDate: Date.init)
+        var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
-        var receivedResults = [LocalFeedLoad.SaveResult]()
+        var receivedResults = [LocalFeedLoader.SaveResult]()
         sut?.saveOnCache(uniqueItems().models) { receivedResults.append($0) }
         
         store.completeDeletionSuccessfully()
@@ -106,7 +106,7 @@ class FeedCachesUseCaseTest: XCTestCase {
 
 extension FeedCachesUseCaseTest {
     
-    private func expect(_ sut: LocalFeedLoad,
+    private func expect(_ sut: LocalFeedLoader,
                         toCompleteWithError expectedError: NSError?,
                         when action: () -> Void,
                         file: StaticString = #file,
@@ -126,9 +126,9 @@ extension FeedCachesUseCaseTest {
     
     func makeSUT(currentDate: @escaping () -> Date = Date.init,
                  file: StaticString = #file,
-                 line: UInt = #line) -> (store: FeedStoreSpy, sut: LocalFeedLoad) {
+                 line: UInt = #line) -> (store: FeedStoreSpy, sut: LocalFeedLoader) {
         let store = FeedStoreSpy()
-        let sut = LocalFeedLoad(store: store, currentDate: currentDate)
+        let sut = LocalFeedLoader(store: store, currentDate: currentDate)
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (store, sut)
