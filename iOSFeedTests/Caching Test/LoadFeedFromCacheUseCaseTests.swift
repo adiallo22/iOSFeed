@@ -63,16 +63,16 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         }
     }
     
-    func test_deleteCacheOnRetrievalError() {
+    func test_load_doesNotHaveSideEffectOnRetrievalError() {
         let (store, sut) = makeSUT()
         
         sut.load { _ in }
         store.completeRetrieval(with: anyError())
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCacheFeed])
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_doesNotDeleteCacheOnEmptyCache() {
+    func test_load_doesNotDeleteCacheOnEmptyCache() {
         let (store, sut) = makeSUT()
         
         sut.load { _ in }
@@ -81,7 +81,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_doesNotDeleteCacheOnFeedLessThanSevenDaysOld() {
+    func test_load_doesNotDeleteCacheOnFeedLessThanSevenDaysOld() {
         let feed = uniqueItems()
         let currentDate = Date()
         let lessThanSevenDaysOldTomestamp = currentDate.adding(days: -7).adding(seconds: 1)
@@ -93,7 +93,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_DeleteCacheOnFeedMoreThanSevenDaysOld() {
+    func test_load_DeleteCacheOnFeedMoreThanSevenDaysOld() {
         let feed = uniqueItems()
         let currentDate = Date()
         let sevenDaysOldTomestamp = currentDate.adding(days: -8)
