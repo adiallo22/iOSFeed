@@ -63,9 +63,10 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         }
     }
     
+    //in the below cases, side effect is refering to deleting cache; so we should expect no deletion
+    
     func test_load_doesNotHaveSideEffectOnRetrievalError() {
         let (store, sut) = makeSUT()
-        //in this case side effect refers to deleting cache
         sut.load { _ in }
         store.completeRetrieval(with: anyError())
         
@@ -73,7 +74,6 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     func test_load_hasNoSideEffectOnEmptyCache() {
-        // in this case side effect is refering to deleting cache
         let (store, sut) = makeSUT()
         
         sut.load { _ in }
@@ -83,7 +83,6 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
     }
     
     func test_load_hasNoSideEffectOnFeedLessThanSevenDaysOld() {
-        // in this case side effect is refering to deleting cache
         let feed = uniqueItems()
         let currentDate = Date()
         let lessThanSevenDaysOldTomestamp = currentDate.adding(days: -7).adding(seconds: 1)
@@ -95,7 +94,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_load_DeleteCacheOnFeedMoreThanSevenDaysOld() {
+    func test_load_hasNoSideEffectOnFeedMoreThanSevenDaysOld() {
         let feed = uniqueItems()
         let currentDate = Date()
         let sevenDaysOldTomestamp = currentDate.adding(days: -8)
@@ -104,7 +103,19 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         sut.load { _ in }
         store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTomestamp)
         
-        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCacheFeed])
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
+    }
+    
+    func test_load_hasNoSideEffectOnExactlySevenDaysOld() {
+        let feed = uniqueItems()
+        let currentDate = Date()
+        let sevenDaysOldTomestamp = currentDate.adding(days: -7)
+        let (store, sut) = makeSUT { currentDate }
+        
+        sut.load { _ in }
+        store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTomestamp)
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
     func test_load_doesNotDeliverResultAfterSUTInstancehasBeenDealocated() {
