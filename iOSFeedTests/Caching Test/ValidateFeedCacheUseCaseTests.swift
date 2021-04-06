@@ -34,38 +34,38 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_validatesCache_doesNotDeleteCacheOnFeedLessThanSevenDaysOld() {
+    func test_validatesCache_doesNotDeleteCacheOnNonExpiredCache() {
         let feed = uniqueItems()
         let currentDate = Date()
-        let lessThanSevenDaysOldTomestamp = currentDate.adding(days: -7).adding(seconds: 1)
+        let nonExpiredTimestamp = currentDate.minusFeedChacheMaxAge().adding(seconds: 1)
         let (store, sut) = makeSUT { currentDate }
         
         sut.validateCache()
-        store.completeRetrieval(with: feed.local, timestamp: lessThanSevenDaysOldTomestamp)
+        store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
     
-    func test_validateCache_DeleteCacheOnFeedMoreThanSevenDaysOld() {
+    func test_validateCache_DeleteCacheOnExpiredCache() {
         let feed = uniqueItems()
         let currentDate = Date()
-        let sevenDaysOldTomestamp = currentDate.adding(days: -8)
+        let expiredTimestamp = currentDate.adding(days: -8)
         let (store, sut) = makeSUT { currentDate }
         
         sut.validateCache()
-        store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTomestamp)
+        store.completeRetrieval(with: feed.local, timestamp: expiredTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCacheFeed])
     }
     
-    func test_validateCache_DeleteCacheOnExactlySevenDaysOld() {
+    func test_validateCache_DeleteCacheOnExactExpiration() {
         let feed = uniqueItems()
         let currentDate = Date()
-        let sevenDaysOldTomestamp = currentDate.adding(days: -7)
+        let exactExpirationTimestamp = currentDate.minusFeedChacheMaxAge()
         let (store, sut) = makeSUT { currentDate }
         
         sut.validateCache()
-        store.completeRetrieval(with: feed.local, timestamp: sevenDaysOldTomestamp)
+        store.completeRetrieval(with: feed.local, timestamp: exactExpirationTimestamp)
         
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCacheFeed])
     }
