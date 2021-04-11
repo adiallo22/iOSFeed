@@ -1,14 +1,12 @@
 //
-//  Feed.swift
+//  LocalFeedItem.swift
 //  iOSFeed
 //
-//  Created by Abdul Diallo on 2/9/21.
+//  Created by Abdul Diallo on 3/17/21.
 //  Copyright © 2021 Abdul Diallo. All rights reserved.
 //
 
-import Foundation
-
-public struct FeedImage: Decodable, Equatable {
+public struct LocalFeedImage: Decodable, Equatable {
     public var id: UUID
     public var description: String?
     public var location: String?
@@ -20,8 +18,4 @@ public struct FeedImage: Decodable, Equatable {
         self.location = location
         self.image = image
     }
-}
-
-struct Root: Decodable {
-    var items: [RemoteFeedImage]
 }
