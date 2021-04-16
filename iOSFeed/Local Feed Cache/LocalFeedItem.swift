@@ -6,7 +6,7 @@
 //  Copyright © 2021 Abdul Diallo. All rights reserved.
 //
 
-public struct LocalFeedImage: Decodable, Equatable {
+public struct LocalFeedImage: Codable, Equatable {
     public var id: UUID
     public var description: String?
     public var location: String?
