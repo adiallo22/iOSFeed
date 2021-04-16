@@ -11,7 +11,7 @@ import iOSFeed
 
 class CoableFeedStore {
     
-    let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
+    let storeURL: URL
     
     private struct Cache: Codable {
         let feed: [CodableFeedImage]
@@ -42,6 +42,10 @@ class CoableFeedStore {
         }
     }
     
+    init(storeURL: URL) {
+        self.storeURL = storeURL
+    }
+    
     func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
         guard let data = try? Data(contentsOf: storeURL) else {
             completion(.empty)
@@ -64,18 +68,16 @@ class CodableFeedStoreTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
-        try? FileManager.default.removeItem(at: storeURL)
+        setUpEmptyStoreState()
     }
     
     override func tearDown() {
         super.tearDown()
-        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
-        try? FileManager.default.removeItem(at: storeURL)
+        undoStoreSideEffects()
     }
     
     func test_retrieve_deliversEmptyCacheOnEmptyCache() {
-        let sut = CoableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Wait for result")
         
         sut.retrieve { result in
@@ -91,7 +93,7 @@ class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieve_hasNoSideEffectOnEmptyCache() {
-        let sut = CoableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Wait for result")
         
         sut.retrieve { firstResult in
@@ -109,7 +111,7 @@ class CodableFeedStoreTests: XCTestCase {
     }
     
     func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache() {
-        let sut = CoableFeedStore()
+        let sut = makeSUT()
         let exp = expectation(description: "Wait for result")
         let feed = uniqueItems().local
         let timestamp = Date()
@@ -129,6 +131,31 @@ class CodableFeedStoreTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 1.0)
+    }
+    
+}
+
+//MARK: - Helpers
+
+extension CodableFeedStoreTests {
+    
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CoableFeedStore {
+        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
+        let sut = CoableFeedStore(storeURL: storeURL)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
+    
+    private func testSpecificStoreURL() -> URL {
+        return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("\(type(of: self)).store")
+    }
+    
+    private func setUpEmptyStoreState() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+    }
+    
+    private func undoStoreSideEffects() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
     
 }
