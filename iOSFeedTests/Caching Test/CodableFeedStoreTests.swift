@@ -13,9 +13,33 @@ class CoableFeedStore {
     
     let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("image-feed.store")
     
-    struct Cache: Codable {
-        let feed: [LocalFeedImage]
+    private struct Cache: Codable {
+        let feed: [CodableFeedImage]
         let timestamp: Date
+        
+        var localFeed: [LocalFeedImage] {
+            feed.map {
+                $0.local
+            }
+        }
+    }
+    
+    private struct CodableFeedImage: Codable {
+        var id: UUID
+        var description: String?
+        var location: String?
+        var image: URL
+        
+        init(_ image: LocalFeedImage) {
+            self.id = image.id
+            self.description = image.description
+            self.location = image.location
+            self.image = image.image
+        }
+        
+        var local: LocalFeedImage {
+            LocalFeedImage(id: id, description: description, location: location, image: image)
+        }
     }
     
     func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
@@ -25,11 +49,12 @@ class CoableFeedStore {
         }
         let decoder = JSONDecoder()
         let decodedCache = try! decoder.decode(Cache.self, from: data)
-        completion(.found(feed: decodedCache.feed, timestamp: decodedCache.timestamp))
+        completion(.found(feed: decodedCache.localFeed, timestamp: decodedCache.timestamp))
     }
     func insert(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping FeedStore.InsertionCompletion) {
         let encoder = JSONEncoder()
-        let encodedCache = try! encoder.encode(Cache(feed: items, timestamp: timestamp))
+        let cache = items.map(CodableFeedImage.init)
+        let encodedCache = try! encoder.encode(Cache(feed: cache, timestamp: timestamp))
         try! encodedCache.write(to: storeURL)
         completion(nil)
     }
@@ -90,7 +115,7 @@ class CodableFeedStoreTests: XCTestCase {
         let timestamp = Date()
         
         sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected to get nil error, but got \(insertionError) instead")
+            XCTAssertNil(insertionError, "Expected to get nil error, but got \(String(describing: insertionError)) instead")
             sut.retrieve { result in
                 switch result {
                 case .found(feed: let retrievedFeed, timestamp: let retrievedTimestamp):
