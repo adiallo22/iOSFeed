@@ -52,8 +52,12 @@ class CodableFeedStore {
             return
         }
         let decoder = JSONDecoder()
-        let decodedCache = try! decoder.decode(Cache.self, from: data)
-        completion(.found(feed: decodedCache.localFeed, timestamp: decodedCache.timestamp))
+        do {
+            let decodedCache = try decoder.decode(Cache.self, from: data)
+            completion(.found(feed: decodedCache.localFeed, timestamp: decodedCache.timestamp))
+        } catch let error {
+            completion(.failure(error))
+        }
     }
     func insert(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping FeedStore.InsertionCompletion) {
         let encoder = JSONEncoder()
@@ -108,14 +112,31 @@ class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
     }
     
+    func test_retrieve_deliversErrorOnInvalidData() {
+        let storeURL = testSpecificStoreURL()
+        let sut = makeSUT(storeURL: storeURL)
+        try! "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
+        expect(sut, toRetrieve: .failure(anyError()))
+    }
+    
+    func test_retrieve_hasNoSideEffectOnFailure() {
+        let storeURL = testSpecificStoreURL()
+        let sut = makeSUT(storeURL: storeURL)
+        try! "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
+        expect(sut, toRetrieve: .failure(anyError()))
+        expect(sut, toRetrieve: .failure(anyError()))
+    }
+    
 }
 
 //MARK: - Helpers
 
 extension CodableFeedStoreTests {
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CodableFeedStore {
-        let sut = CodableFeedStore(storeURL: testSpecificStoreURL())
+    private func makeSUT(storeURL: URL? = nil,
+                         file: StaticString = #file,
+                         line: UInt = #line) -> CodableFeedStore {
+        let sut = CodableFeedStore(storeURL: storeURL ?? testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
@@ -141,11 +162,12 @@ extension CodableFeedStoreTests {
         
         sut.retrieve { receivedResult in
             switch (expectedResult, receivedResult) {
-            case (.empty, .empty):
+            case (.empty, .empty),
+                 (.failure, .failure):
                 break
-            case (.found(let expected), .found(let received)):
-                XCTAssertEqual(expected.feed, received.feed, file: file, line: line)
-                XCTAssertEqual(expected.timestamp, received.timestamp, file: file, line: line)
+            case let (.found(expectedFeed, expectedTimestamp), .found(receivedFeed, receivedTimestamp)):
+                XCTAssertEqual(expectedFeed, receivedFeed, file: file, line: line)
+                XCTAssertEqual(expectedTimestamp, receivedTimestamp, file: file, line: line)
             default:
                 XCTFail("expected to get \(expectedResult), but got \(receivedResult) instead", file: file, line: line)
             }
