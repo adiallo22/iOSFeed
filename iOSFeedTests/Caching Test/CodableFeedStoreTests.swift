@@ -9,7 +9,7 @@
 import XCTest
 import iOSFeed
 
-class CoableFeedStore {
+class CodableFeedStore {
     
     let storeURL: URL
     
@@ -92,12 +92,7 @@ class CodableFeedStoreTests: XCTestCase {
         let feed = uniqueItems().local
         let timestamp = Date()
         
-        let exp = expectation(description: "Wait for result")
-        sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected to get nil error, but got \(String(describing: insertionError)) instead")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        insert(feed, timestamp, to: sut)
         
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
     }
@@ -107,12 +102,7 @@ class CodableFeedStoreTests: XCTestCase {
         let feed = uniqueItems().local
         let timestamp = Date()
         
-        let exp = expectation(description: "Wait for result")
-        sut.insert(feed, timestamp: timestamp) { insertionError in
-            XCTAssertNil(insertionError, "Expected to get nil error, but got \(String(describing: insertionError)) instead")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        insert(feed, timestamp, to: sut)
         
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
         expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
@@ -124,14 +114,28 @@ class CodableFeedStoreTests: XCTestCase {
 
 extension CodableFeedStoreTests {
     
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CoableFeedStore {
-        let sut = CoableFeedStore(storeURL: testSpecificStoreURL())
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CodableFeedStore {
+        let sut = CodableFeedStore(storeURL: testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
     
-    private func expect(_ sut: CoableFeedStore,
-                        toRetrieve expectedResult: RetrievedCachedResult, file: StaticString = #file,
+    private func insert(_ feed: [LocalFeedImage],
+                        _ timestamp: Date,
+                        to sut: CodableFeedStore,
+                        file: StaticString = #file,
+                        line: UInt = #line) {
+        let exp = expectation(description: "Wait for result")
+        sut.insert(feed, timestamp: timestamp) { (insertionError) in
+            XCTAssertNil(insertionError, "Expected to get nil error, but got \(String(describing: insertionError)) instead")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    private func expect(_ sut: CodableFeedStore,
+                        toRetrieve expectedResult: RetrievedCachedResult,
+                        file: StaticString = #file,
                         line: UInt = #line) {
         let exp = expectation(description: "Wait for result")
         
