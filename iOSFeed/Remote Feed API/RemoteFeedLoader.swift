@@ -30,10 +30,26 @@ public final class RemoteFeedLoader: FeedLoader {
             guard self != nil else { return }
             switch result {
             case .sucess(let data, let response):
-                completion(FeedItemsMapper.map(data, response))
+                do {
+                    let items = try FeedItemsMapper.map(data, response)
+                    completion(.success(items.toFeed()))
+                } catch {
+                    completion(.failure(Error.invalidData))
+                }
             case .failure:
                 completion(.failure(Error.connectivity))
             }
+        }
+    }
+}
+
+private extension Array where Element == RemoteFeedImage {
+    func toFeed() -> [FeedImage] {
+        map {
+            FeedImage(id: $0.id,
+                 description: $0.description,
+                 location: $0.location,
+                 image: $0.image)
         }
     }
 }
