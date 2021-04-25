@@ -6,7 +6,7 @@
 //  Copyright © 2021 Abdul Diallo. All rights reserved.
 //
 
-protocol CodableFeedStoreSpecs {
+protocol FeedStoreSpecs {
     func test_retrieve_deliversEmptyCacheOnEmptyCache()
     func test_retrieve_hasNoSideEffectOnEmptyCache()
     func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache()
@@ -20,17 +20,17 @@ protocol CodableFeedStoreSpecs {
     func test_operation_shouldBeRunningSerially()
 }
 
-protocol FailableRetrieveFeedStoreSpecs: CodableFeedStoreSpecs {
+protocol FailableRetrieveFeedStoreSpecs: FeedStoreSpecs {
     func test_retrieve_deliversErrorOnInvalidData()
     func test_retrieve_hasNoSideEffectOnFailure()
 }
 
-protocol FailableInsertFeedStoreSpecs: CodableFeedStoreSpecs {
+protocol FailableInsertFeedStoreSpecs: FeedStoreSpecs {
     func test_insert_deliversErrorOnInsertionFailure()
     func test_insert_hasNoSideEffectOnFailure()
 }
 
-protocol FailableDeleteFeedStoreSpecs: CodableFeedStoreSpecs {
+protocol FailableDeleteFeedStoreSpecs: FeedStoreSpecs {
     func test_delete_deliversErrorOnDeletionError()
     func test_delete_hasNoSideEffectDeletionFailure()
 }
