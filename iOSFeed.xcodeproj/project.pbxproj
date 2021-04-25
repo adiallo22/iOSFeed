@@ -209,9 +209,9 @@
 			children = (
 				C0F226982611010700882EB2 /* Helpers */,
 				C0F2264525FEB1FC00882EB2 /* FeedCachesUseCaseTest.swift */,
-				C05B4D012623814F00C01557 /* CodableFeedStoreTests.swift */,
 				C0F2268E2610FE0700882EB2 /* LoadFeedFromCacheUseCaseTests.swift */,
 				C05B4CD4261A2F0100C01557 /* ValidateFeedCacheUseCaseTests.swift */,
+				C05B4D012623814F00C01557 /* CodableFeedStoreTests.swift */,
 			);
 			path = "Caching Test";
 			sourceTree = "<group>";
