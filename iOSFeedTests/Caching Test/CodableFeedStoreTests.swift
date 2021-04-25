@@ -9,7 +9,7 @@
 import XCTest
 import iOSFeed
 
-class CodableFeedStoreTests: XCTestCase {
+class CodableFeedStoreTests: XCTestCase, FailableSpecs {
     
     override func setUp() {
         super.setUp()
@@ -249,35 +249,4 @@ extension CodableFeedStoreTests {
         try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
     
-}
-
-
-
-protocol CodableFeedStoreSpecs {
-    func test_retrieve_deliversEmptyCacheOnEmptyCache()
-    func test_retrieve_hasNoSideEffectOnEmptyCache()
-    func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache()
-    func test_retrieveAfterInsertion_hasNoSideEffectOnEmptyCache()
-
-    func test_insert_overridesPreviouslyCacheValues()
-
-    func test_delete_hasNoSideEffectsOnEmptyCache()
-    func test_delete_esmptiesPreviouslyInsertedCache()
-
-    func test_operation_shouldBeRunningSerially()
-}
-
-protocol FailableRetrieveFeedStoreSpecs {
-    func test_retrieve_deliversErrorOnInvalidData()
-    func test_retrieve_hasNoSideEffectOnFailure()
-}
-
-protocol FailableInsertFeedStoreSpecs {
-    func test_insert_deliversErrorOnInsertionFailure()
-    func test_insert_hasNoSideEffectOnFailure()
-}
-
-protocol FailableDeleteFeedStoreSpecs {
-    func test_delete_deliversErrorOnDeletionError()
-    func test_delete_hasNoSideEffectDeletionFailure()
 }
