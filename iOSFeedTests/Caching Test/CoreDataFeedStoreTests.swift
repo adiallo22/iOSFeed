@@ -7,21 +7,7 @@
 //
 
 import XCTest
-import iOSFeed
-
-class CoreDaraFeedStore: FeedStore {
-    func deleteCacheFeed(completion: @escaping DeletionCompletion) {
-        
-    }
-    
-    func insert(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        
-    }
-    
-    func retrieve(completion: @escaping RetrievalCompletion) {
-        completion(.empty)
-    }
-}
+@testable import iOSFeed
 
 class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     
@@ -101,7 +87,8 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
 extension CoreDataFeedStoreTests {
     
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
-        let sut = CoreDaraFeedStore()
+        let storeBundle = Bundle(for: CoreDataFeedStore.self)
+        let sut = try! CoreDataFeedStore(bundle: storeBundle)
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
