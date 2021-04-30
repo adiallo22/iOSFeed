@@ -11,15 +11,15 @@ import iOSFeed
 
 class CoreDaraFeedStore: FeedStore {
     func deleteCacheFeed(completion: @escaping DeletionCompletion) {
-        <#code#>
+        
     }
     
     func insert(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        <#code#>
+        
     }
     
     func retrieve(completion: @escaping RetrievalCompletion) {
-        <#code#>
+        completion(.empty)
     }
 }
 
@@ -34,59 +34,61 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_retrieve_deliversErrorOnInvalidData() {
-        <#code#>
+        
     }
     
     func test_retrieve_hasNoSideEffectOnFailure() {
-        <#code#>
+        
     }
     
     func test_insert_deliversErrorOnInsertionFailure() {
-        <#code#>
+        
     }
     
     func test_insert_hasNoSideEffectOnFailure() {
-        <#code#>
+        
     }
     
     func test_delete_deliversErrorOnDeletionError() {
-        <#code#>
+        
     }
     
     func test_delete_hasNoSideEffectDeletionFailure() {
-        <#code#>
+        
     }
     
     func test_retrieve_deliversEmptyCacheOnEmptyCache() {
-
+        let sut = makeSUT()
+        
+        expect(sut, toRetrieve: .empty)
     }
     
     func test_retrieve_hasNoSideEffectOnEmptyCache() {
-        <#code#>
+        
     }
     
     func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache() {
-        <#code#>
+        
     }
     
     func test_retrieveAfterInsertion_hasNoSideEffectOnEmptyCache() {
-        <#code#>
+        
     }
     
     func test_insert_overridesPreviouslyCacheValues() {
-        <#code#>
+        
     }
     
     func test_delete_hasNoSideEffectsOnEmptyCache() {
-        <#code#>
+        
     }
     
     func test_delete_esmptiesPreviouslyInsertedCache() {
-        <#code#>
+        
     }
     
     func test_operation_shouldBeRunningSerially() {
-        <#code#>
+        
     }
     
 }
@@ -97,7 +99,8 @@ extension CoreDataFeedStoreTests {
     
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> FeedStore {
         let sut = CoreDaraFeedStore()
-        trackForMemoryLeaks(sut)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
     }
     
 }
