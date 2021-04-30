@@ -21,6 +21,7 @@
 		C05B4D022623814F00C01557 /* CodableFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B4D012623814F00C01557 /* CodableFeedStoreTests.swift */; };
 		C08116712635E36E00252F7F /* FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08116702635E36E00252F7F /* FeedStoreSpecs.swift */; };
 		C08116792635E4AD00252F7F /* XCTestCase+FeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08116782635E4AD00252F7F /* XCTestCase+FeedStoreSpecs.swift */; };
+		C081167E263B9B2E00252F7F /* CoreDataFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C081167D263B9B2E00252F7F /* CoreDataFeedStoreTests.swift */; };
 		C0EDA0E225D38AE700C1B9E6 /* iOSFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = C0EDA0E025D38AE700C1B9E6 /* iOSFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0EDA0F125D38B0A00C1B9E6 /* iOSFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EDA0DD25D38AE700C1B9E6 /* iOSFeed.framework */; };
 		C0EDA0F925D38B4700C1B9E6 /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EDA0F825D38B4700C1B9E6 /* FeedLoader.swift */; };
@@ -70,6 +71,7 @@
 		C05B4D012623814F00C01557 /* CodableFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStoreTests.swift; sourceTree = "<group>"; };
 		C08116702635E36E00252F7F /* FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreSpecs.swift; sourceTree = "<group>"; };
 		C08116782635E4AD00252F7F /* XCTestCase+FeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedStoreSpecs.swift"; sourceTree = "<group>"; };
+		C081167D263B9B2E00252F7F /* CoreDataFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStoreTests.swift; sourceTree = "<group>"; };
 		C0EDA0DD25D38AE700C1B9E6 /* iOSFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EDA0E025D38AE700C1B9E6 /* iOSFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSFeed.h; sourceTree = "<group>"; };
 		C0EDA0E125D38AE700C1B9E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				C0F2268E2610FE0700882EB2 /* LoadFeedFromCacheUseCaseTests.swift */,
 				C05B4CD4261A2F0100C01557 /* ValidateFeedCacheUseCaseTests.swift */,
 				C05B4D012623814F00C01557 /* CodableFeedStoreTests.swift */,
+				C081167D263B9B2E00252F7F /* CoreDataFeedStoreTests.swift */,
 			);
 			path = "Caching Test";
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C08116712635E36E00252F7F /* FeedStoreSpecs.swift in Sources */,
+				C081167E263B9B2E00252F7F /* CoreDataFeedStoreTests.swift in Sources */,
 				C05B4D022623814F00C01557 /* CodableFeedStoreTests.swift in Sources */,
 				C05B4CD5261A2F0100C01557 /* ValidateFeedCacheUseCaseTests.swift in Sources */,
 				C05B4CE2261B557100C01557 /* GlobalTestHelpers.swift in Sources */,
