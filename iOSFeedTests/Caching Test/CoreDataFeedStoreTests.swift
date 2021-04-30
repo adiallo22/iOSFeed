@@ -64,7 +64,10 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_retrieve_hasNoSideEffectOnEmptyCache() {
+        let sut = makeSUT()
         
+        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieve: .empty)
     }
     
     func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache() {
