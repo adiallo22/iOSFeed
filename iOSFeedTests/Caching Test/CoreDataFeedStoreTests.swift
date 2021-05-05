@@ -67,7 +67,21 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_retrieveAfterInsertion_hasNoSideEffectOnEmptyCache() {
+        let sut = makeSUT()
+        let feed = uniqueItems().local
+        let timestamp = Date()
         
+        insert(feed, timestamp, to: sut)
+        
+        expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
+    }
+    
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSUT()
+        
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil bot got \(insertionError) instead")
     }
     
     func test_insert_overridesPreviouslyCacheValues() {

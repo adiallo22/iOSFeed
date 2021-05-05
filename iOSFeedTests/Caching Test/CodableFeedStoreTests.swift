@@ -68,6 +68,14 @@ class CodableFeedStoreTests: XCTestCase, FailableSpecs {
         expect(sut, toRetrieve: .failure(anyError()))
     }
     
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSUT()
+        
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil bot got \(insertionError) instead")
+    }
+    
     func test_insert_overridesPreviouslyCacheValues() {
         let sut = makeSUT()
         let firstInsertionError = insert(uniqueItems().local, Date(), to: sut)
