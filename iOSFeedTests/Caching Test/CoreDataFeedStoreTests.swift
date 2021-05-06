@@ -94,11 +94,22 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_insert_overridesPreviouslyCacheValues() {
+        let sut = makeSUT()
+        insert(uniqueItems().local, Date(), to: sut)
         
+        let newFeed = uniqueItems().local
+        let newTimestamp = Date()
+        insert(newFeed, newTimestamp, to: sut)
+        
+        expect(sut, toRetrieve: .found(feed: newFeed, timestamp: newTimestamp))
     }
     
     func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
         
+        deleteCache(from: sut)
+        
+        expect(sut, toRetrieve: .empty)
     }
     
     func test_delete_esmptiesPreviouslyInsertedCache() {
