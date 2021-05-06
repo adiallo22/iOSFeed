@@ -131,7 +131,29 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_operation_shouldBeRunningSerially() {
+        let sut = makeSUT()
+        var operations = [XCTestExpectation]()
         
+        let op1 = expectation(description: "wait for operation 1")
+        sut.insert(uniqueItems().local, timestamp: Date()) { (_) in
+            operations.append(op1)
+            op1.fulfill()
+        }
+        
+        let op2 = expectation(description: "wait for operation 2")
+        sut.deleteCacheFeed { (_) in
+            operations.append(op2)
+            op2.fulfill()
+        }
+        
+        let op3 = expectation(description: "wait for operation 3")
+        sut.insert(uniqueItems().local, timestamp: Date()) { (_) in
+            operations.append(op3)
+            op3.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5.0)
+        XCTAssertEqual(operations, [op1, op2, op3])
     }
     
 }
