@@ -112,6 +112,15 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         expect(sut, toRetrieve: .empty)
     }
     
+    func test_delete_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        insert(uniqueItems().local, Date(), to: sut)
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNil(deletionError, "expected to get nil error, but got \(String(describing: deletionError)) instead")
+    }
+    
     func test_delete_esmptiesPreviouslyInsertedCache() {
         
     }
