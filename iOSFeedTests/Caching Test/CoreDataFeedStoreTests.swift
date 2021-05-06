@@ -122,7 +122,12 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     }
     
     func test_delete_esmptiesPreviouslyInsertedCache() {
+        let sut = makeSUT()
+        insert(uniqueItems().local, Date(), to: sut)
         
+        deleteCache(from: sut)
+        
+        expect(sut, toRetrieve: .empty)
     }
     
     func test_operation_shouldBeRunningSerially() {
