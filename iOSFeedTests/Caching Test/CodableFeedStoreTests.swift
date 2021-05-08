@@ -9,7 +9,7 @@
 import XCTest
 import iOSFeed
 
-class CodableFeedStoreTests: XCTestCase {
+class CodableFeedStoreTests: XCTestCase, FailableSpecs {
     
     override func setUp() {
         super.setUp()
@@ -68,6 +68,23 @@ class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieve: .failure(anyError()))
     }
     
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSUT()
+        
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil but got \(String(describing: insertionError)) instead")
+    }
+    
+    func test_insert_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        insert(uniqueItems().local, Date(), to: sut)
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil but got \(String(describing: insertionError)) instead")
+    }
+    
     func test_insert_overridesPreviouslyCacheValues() {
         let sut = makeSUT()
         let firstInsertionError = insert(uniqueItems().local, Date(), to: sut)
@@ -92,6 +109,17 @@ class CodableFeedStoreTests: XCTestCase {
         XCTAssertNotNil(insertionError, "expected cache insertion to fail with an error")
     }
     
+    func test_insert_hasNoSideEffectOnFailure() {
+        let invalidStoreURL = URL(string: "whatever://store-url")!
+        let sut = makeSUT(storeURL: invalidStoreURL)
+        let feed = uniqueItems().local
+        let timestamp = Date()
+        
+        insert(feed, timestamp, to: sut)
+        
+        expect(sut, toRetrieve: .empty)
+    }
+    
     func test_delete_hasNoSideEffectsOnEmptyCache() {
         let sut = makeSUT()
         
@@ -113,6 +141,15 @@ class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieve: .empty)
     }
     
+    func test_delete_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        insert(uniqueItems().local, Date(), to: sut)
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNil(deletionError, "expected to get nil error, but got \(String(describing: deletionError)) instead")
+    }
+    
     func test_delete_deliversErrorOnDeletionError() {
         let nonDeleteCachePermission = cachesDirectory()
         let sut = makeSUT(storeURL: nonDeleteCachePermission)
@@ -121,6 +158,41 @@ class CodableFeedStoreTests: XCTestCase {
         
         XCTAssertNotNil(deletionError, "Expected deletion to fail")
         expect(sut, toRetrieve: .empty)
+    }
+    
+    func test_delete_hasNoSideEffectDeletionFailure() {
+        let nonDeleteCachePermission = cachesDirectory()
+        let sut = makeSUT(storeURL: nonDeleteCachePermission)
+        
+        deleteCache(from: sut)
+        
+        expect(sut, toRetrieve: .empty)
+    }
+    
+    func test_operation_shouldBeRunningSerially() {
+        let sut = makeSUT()
+        var operations = [XCTestExpectation]()
+        
+        let op1 = expectation(description: "wait for operation 1")
+        sut.insert(uniqueItems().local, timestamp: Date()) { (_) in
+            operations.append(op1)
+            op1.fulfill()
+        }
+        
+        let op2 = expectation(description: "wait for operation 2")
+        sut.deleteCacheFeed { (_) in
+            operations.append(op2)
+            op2.fulfill()
+        }
+        
+        let op3 = expectation(description: "wait for operation 3")
+        sut.insert(uniqueItems().local, timestamp: Date()) { (_) in
+            operations.append(op3)
+            op3.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5.0)
+        XCTAssertEqual(operations, [op1, op2, op3])
     }
     
 }
@@ -135,56 +207,6 @@ extension CodableFeedStoreTests {
         let sut = CodableFeedStore(storeURL: storeURL ?? testSpecificStoreURL())
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
-    }
-    
-    @discardableResult private func insert(_ feed: [LocalFeedImage],
-                        _ timestamp: Date,
-                        to sut: FeedStore,
-                        file: StaticString = #file,
-                        line: UInt = #line) -> Error? {
-        let exp = expectation(description: "Wait for result")
-        var receivedError: Error?
-        sut.insert(feed, timestamp: timestamp) { (insertionError) in
-            receivedError = insertionError
-        }
-        exp.fulfill()
-        wait(for: [exp], timeout: 1.0)
-        return receivedError
-    }
-    
-    private func deleteCache(from sut: FeedStore,
-                        file: StaticString = #file,
-                        line: UInt = #line) -> Error? {
-        let exp = expectation(description: "Wait for result")
-        var receivedError: Error?
-        sut.deleteCacheFeed { (error) in
-            receivedError = error
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
-        return receivedError
-    }
-    
-    private func expect(_ sut: FeedStore,
-                        toRetrieve expectedResult: RetrievedCachedResult,
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "Wait for result")
-        
-        sut.retrieve { receivedResult in
-            switch (expectedResult, receivedResult) {
-            case (.empty, .empty),
-                 (.failure, .failure):
-                break
-            case let (.found(expectedFeed, expectedTimestamp), .found(receivedFeed, receivedTimestamp)):
-                XCTAssertEqual(expectedFeed, receivedFeed, file: file, line: line)
-                XCTAssertEqual(expectedTimestamp, receivedTimestamp, file: file, line: line)
-            default:
-                XCTFail("expected to get \(expectedResult), but got \(receivedResult) instead", file: file, line: line)
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
     }
     
     private func testSpecificStoreURL() -> URL {
