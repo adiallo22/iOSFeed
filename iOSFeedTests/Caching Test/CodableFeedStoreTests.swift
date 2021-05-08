@@ -68,6 +68,23 @@ class CodableFeedStoreTests: XCTestCase, FailableSpecs {
         expect(sut, toRetrieve: .failure(anyError()))
     }
     
+    func test_insert_deliversNoErrorOnEmptyCache() {
+        let sut = makeSUT()
+        
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil but got \(String(describing: insertionError)) instead")
+    }
+    
+    func test_insert_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        insert(uniqueItems().local, Date(), to: sut)
+        let insertionError = insert(uniqueItems().local, Date(), to: sut)
+        
+        XCTAssertNil(insertionError, "expected to receive nil but got \(String(describing: insertionError)) instead")
+    }
+    
     func test_insert_overridesPreviouslyCacheValues() {
         let sut = makeSUT()
         let firstInsertionError = insert(uniqueItems().local, Date(), to: sut)
@@ -122,6 +139,15 @@ class CodableFeedStoreTests: XCTestCase, FailableSpecs {
         XCTAssertNil(deletionError, "Expected deletion to be successfull")
         
         expect(sut, toRetrieve: .empty)
+    }
+    
+    func test_delete_deliversNoErrorOnNonEmptyCache() {
+        let sut = makeSUT()
+        
+        insert(uniqueItems().local, Date(), to: sut)
+        let deletionError = deleteCache(from: sut)
+        
+        XCTAssertNil(deletionError, "expected to get nil error, but got \(String(describing: deletionError)) instead")
     }
     
     func test_delete_deliversErrorOnDeletionError() {
