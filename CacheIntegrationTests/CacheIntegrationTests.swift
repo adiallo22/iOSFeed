@@ -22,19 +22,8 @@ class CacheIntegrationTests: XCTestCase {
     
     func test_load_deliversNoItemEmptyCache() {
         let sut = makeSUT()
-        let exp = expectation(description: "wait for load completion")
         
-        sut.load { (result) in
-            switch result {
-            case .success(let feeds):
-                XCTAssertEqual(feeds, [], "expected feeds to be empty")
-            case .failure(let error):
-                XCTFail("expected to get success, but got \(error) instead.")
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
-        
+        expect(sut, toLoad: [])
     }
     
     func test_load_DeliversItemSavedOnSeparateInstance() {
@@ -44,22 +33,40 @@ class CacheIntegrationTests: XCTestCase {
         
         let saveExp = expectation(description: "wait for save completion")
         sutToPerformSave.saveOnCache(feed) { (saveError) in
-            XCTAssertNil(saveError, "expected not to get an error, but got \(saveError) instead")
+            XCTAssertNil(saveError,
+                         "expected not to get an error, but got \(String(describing: saveError)) instead")
             saveExp.fulfill()
         }
         wait(for: [saveExp], timeout: 1.0)
         
-        let loadExp = expectation(description: "wait for load completion")
-        sutToPerformLoad.load { (result) in
-            switch result {
-            case .success(let feed):
-                XCTAssertEqual(feed, feed)
-            case .failure(let error):
-                XCTFail("expected to get success, but got \(error) instead.")
-            }
-            loadExp.fulfill()
+        expect(sutToPerformLoad, toLoad: feed)
+    }
+    
+    func test_load_overridesItemSavedOnAnotherInstance() {
+        let sutToPerformFirstSave = makeSUT()
+        let sutToPerformLastSave = makeSUT()
+        let sutToPerformLoad = makeSUT()
+        let firstFeed = uniqueItems().models
+        let lastFeed = uniqueItems().models
+        
+        let firstExp = expectation(description: "wait for first saving")
+        sutToPerformFirstSave.saveOnCache(firstFeed) { (saveError) in
+            XCTAssertNil(saveError,
+                         "expected not to get an error, but got \(String(describing: saveError)) instead")
+            firstExp.fulfill()
         }
-        wait(for: [loadExp], timeout: 1.0)
+        wait(for: [firstExp], timeout: 1.0)
+        
+        let lastExp = expectation(description: "wait for first saving")
+        sutToPerformLastSave.saveOnCache(lastFeed) { (saveError) in
+            XCTAssertNil(saveError,
+                         "expected not to get an error, but got \(String(describing: saveError)) instead")
+            lastExp.fulfill()
+        }
+        wait(for: [lastExp], timeout: 1.0)
+        
+        expect(sutToPerformLoad, toLoad: lastFeed)
+
     }
     
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
@@ -70,6 +77,23 @@ class CacheIntegrationTests: XCTestCase {
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
+    }
+    
+    func expect(_ sut: LocalFeedLoader,
+                toLoad expectedFeed: [FeedImage],
+                file: StaticString = #file,
+                line: UInt = #line) {
+        let exp = expectation(description: "wait for load completion")
+        sut.load { (result) in
+            switch result {
+            case .success(let loadedFeed):
+                XCTAssertEqual(loadedFeed,expectedFeed, file: file, line: line)
+            case .failure(let error):
+                XCTFail("expected to get success, but got \(error) instead.", file: file, line: line)
+            }
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
     }
     
     private func testSpecificStoreURL() -> URL {
