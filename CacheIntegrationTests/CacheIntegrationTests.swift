@@ -31,13 +31,7 @@ class CacheIntegrationTests: XCTestCase {
         let sutToPerformLoad = makeSUT()
         let feed = uniqueItems().models
         
-        let saveExp = expectation(description: "wait for save completion")
-        sutToPerformSave.saveOnCache(feed) { (saveError) in
-            XCTAssertNil(saveError,
-                         "expected not to get an error, but got \(String(describing: saveError)) instead")
-            saveExp.fulfill()
-        }
-        wait(for: [saveExp], timeout: 1.0)
+        save(feed, on: sutToPerformSave)
         
         expect(sutToPerformLoad, toLoad: feed)
     }
@@ -49,36 +43,18 @@ class CacheIntegrationTests: XCTestCase {
         let firstFeed = uniqueItems().models
         let lastFeed = uniqueItems().models
         
-        let firstExp = expectation(description: "wait for first saving")
-        sutToPerformFirstSave.saveOnCache(firstFeed) { (saveError) in
-            XCTAssertNil(saveError,
-                         "expected not to get an error, but got \(String(describing: saveError)) instead")
-            firstExp.fulfill()
-        }
-        wait(for: [firstExp], timeout: 1.0)
-        
-        let lastExp = expectation(description: "wait for first saving")
-        sutToPerformLastSave.saveOnCache(lastFeed) { (saveError) in
-            XCTAssertNil(saveError,
-                         "expected not to get an error, but got \(String(describing: saveError)) instead")
-            lastExp.fulfill()
-        }
-        wait(for: [lastExp], timeout: 1.0)
+        save(firstFeed, on: sutToPerformFirstSave)
+        save(lastFeed, on: sutToPerformLastSave)
         
         expect(sutToPerformLoad, toLoad: lastFeed)
 
     }
     
-    func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
-        let storeBundle = Bundle(for: CoreDataFeedStore.self)
-        let storeURL = testSpecificStoreURL()
-        let store = try! CoreDataFeedStore(storeURL: storeURL, bundle: storeBundle)
-        let sut = LocalFeedLoader(store: store, currentDate: Date.init)
-        trackForMemoryLeaks(store, file: file, line: line)
-        trackForMemoryLeaks(sut, file: file, line: line)
-        return sut
-    }
-    
+}
+
+//MARK: - Helpers
+
+extension CacheIntegrationTests {
     func expect(_ sut: LocalFeedLoader,
                 toLoad expectedFeed: [FeedImage],
                 file: StaticString = #file,
@@ -96,6 +72,31 @@ class CacheIntegrationTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
+    func save(_ feed: [FeedImage],
+              on sut: LocalFeedLoader,
+              file: StaticString = #file,
+              line: UInt = #line) {
+        let exp = expectation(description: "wait for saving")
+        sut.saveOnCache(feed) { (saveError) in
+            XCTAssertNil(saveError,
+                         "expected not to get an error, but got \(String(describing: saveError)) instead")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+}
+
+extension CacheIntegrationTests {
+    func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
+        let storeBundle = Bundle(for: CoreDataFeedStore.self)
+        let storeURL = testSpecificStoreURL()
+        let store = try! CoreDataFeedStore(storeURL: storeURL, bundle: storeBundle)
+        let sut = LocalFeedLoader(store: store, currentDate: Date.init)
+        trackForMemoryLeaks(store, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
+    }
+    
     private func testSpecificStoreURL() -> URL {
         return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
     }
@@ -111,6 +112,4 @@ class CacheIntegrationTests: XCTestCase {
     private func undoStoreSideEffects() {
         try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
-    
 }
-
