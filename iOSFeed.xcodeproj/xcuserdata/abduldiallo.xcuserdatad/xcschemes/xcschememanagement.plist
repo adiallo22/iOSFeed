@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CacheIntegrationTests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>iOSFeed.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>C06CCE1B2643941600DE4E7D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C06CCE7526483E5300DE4E7D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
