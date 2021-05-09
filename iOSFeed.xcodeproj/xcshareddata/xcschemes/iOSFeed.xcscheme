@@ -20,6 +20,34 @@
                ReferencedContainer = "container:iOSFeed.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C06CCE1B2643941600DE4E7D"
+               BuildableName = "iOSFeedCacheintegrationTests.xctest"
+               BlueprintName = "iOSFeedCacheintegrationTests"
+               ReferencedContainer = "container:iOSFeed.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C03C4E1725EDE5C600D22C84"
+               BuildableName = "iOSFeedEndToEndTests.xctest"
+               BlueprintName = "iOSFeedEndToEndTests"
+               ReferencedContainer = "container:iOSFeed.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
