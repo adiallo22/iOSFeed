@@ -11,6 +11,15 @@ import iOSFeed
 
 class CacheIntegrationTests: XCTestCase {
     
+    override func setUp() {
+        super.setUp()
+        setUpEmptyStoreState()
+    }
+    override func tearDown() {
+        super.tearDown()
+        undoStoreSideEffects()
+    }
+    
     func test_load_deliversNoItemEmptyCache() {
         let sut = makeSUT()
         let exp = expectation(description: "wait for load completion")
@@ -69,6 +78,14 @@ class CacheIntegrationTests: XCTestCase {
     
     private func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+    }
+    
+    private func setUpEmptyStoreState() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
+    }
+    
+    private func undoStoreSideEffects() {
+        try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
     
 }
