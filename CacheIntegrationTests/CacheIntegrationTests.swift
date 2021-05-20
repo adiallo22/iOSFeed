@@ -88,7 +88,7 @@ extension CacheIntegrationTests {
 
 extension CacheIntegrationTests {
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
-        let storeBundle = Bundle(for: CoreDataFeedStore.self)
+//        let storeBundle = Bundle(for: CoreDataFeedStore.self)
         let storeURL = testSpecificStoreURL()
         let store = CodableFeedStore(storeURL: storeURL)
 //        let store = try! CoreDataFeedStore(storeURL: storeURL, bundle: storeBundle)
