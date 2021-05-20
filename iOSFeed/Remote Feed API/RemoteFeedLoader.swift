@@ -29,7 +29,7 @@ public final class RemoteFeedLoader: FeedLoader {
         client.get(from: url) { [weak self] (result) in
             guard self != nil else { return }
             switch result {
-            case .sucess(let data, let response):
+            case .success((let data, let response)):
                 do {
                     let items = try FeedItemsMapper.map(data, response)
                     completion(.success(items.toFeed()))
