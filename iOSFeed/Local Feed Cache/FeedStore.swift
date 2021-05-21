@@ -8,8 +8,9 @@
 
 import Foundation
 
-public enum RetrievedCachedResult {
-    case failure(Error)
+public typealias RetrievedCachedResult =  Result<CachedResult, Error>
+
+public enum CachedResult {
     case empty
     case found(feed: [LocalFeedImage], timestamp: Date)
 }
