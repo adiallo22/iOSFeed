@@ -46,14 +46,14 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     func test_retrieve_deliversEmptyCacheOnEmptyCache() {
         let sut = makeSUT()
         
-        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieve: .success(.empty))
     }
     
     func test_retrieve_hasNoSideEffectOnEmptyCache() {
         let sut = makeSUT()
         
-        expect(sut, toRetrieve: .empty)
-        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieve: .success(.empty))
+        expect(sut, toRetrieve: .success(.empty))
     }
     
     func test_retrieveAfterInsertingOnEmptyCache_deliversNewlyInsertedCache() {
@@ -63,7 +63,7 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         
         insert(feed, timestamp, to: sut)
         
-        expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
+        expect(sut, toRetrieve: .success(.found(feed: feed, timestamp: timestamp)))
     }
     
     func test_retrieveAfterInsertion_hasNoSideEffectOnEmptyCache() {
@@ -73,7 +73,7 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         
         insert(feed, timestamp, to: sut)
         
-        expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
+        expect(sut, toRetrieve: .success(.found(feed: feed, timestamp: timestamp)))
     }
     
     func test_insert_deliversNoErrorOnEmptyCache() {
@@ -101,7 +101,7 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         let newTimestamp = Date()
         insert(newFeed, newTimestamp, to: sut)
         
-        expect(sut, toRetrieve: .found(feed: newFeed, timestamp: newTimestamp))
+        expect(sut, toRetrieve: .success(.found(feed: newFeed, timestamp: newTimestamp)))
     }
     
     func test_delete_hasNoSideEffectsOnEmptyCache() {
@@ -109,7 +109,7 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         
         deleteCache(from: sut)
         
-        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieve: .success(.empty))
     }
     
     func test_delete_deliversNoErrorOnNonEmptyCache() {
@@ -127,7 +127,7 @@ class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
         
         deleteCache(from: sut)
         
-        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieve: .success(.empty))
     }
     
     func test_operation_shouldBeRunningSerially() {
