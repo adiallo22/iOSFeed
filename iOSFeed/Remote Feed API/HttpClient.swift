@@ -8,10 +8,7 @@
 
 import Foundation
 
-public enum HTTPResponse {
-    case sucess(Data, HTTPURLResponse)
-    case failure(Error)
-}
+public typealias HTTPResponse = Result<(Data, HTTPURLResponse), Error>
 
 public protocol HTTPClient {
     ///The completion handler can be invoked in any thread
