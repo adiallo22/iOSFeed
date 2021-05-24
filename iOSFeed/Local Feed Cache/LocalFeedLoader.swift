@@ -27,12 +27,10 @@ extension LocalFeedLoader: FeedLoader {
             switch result {
             case .failure(let error):
                 completion(.failure(error))
-            case .found(feed: let feed, timestamp: let timestamp)
+            case .success(.found(feed: let feed, timestamp: let timestamp))
                     where FeedCachePolicy.validate(timestamp, against: self.currentDate()):
                 completion(.success(feed.toModels()))
-            case .empty:
-                completion(.success([]))
-            case .found:
+            case .success:
                 completion(.success([]))
             }
         }
@@ -67,10 +65,10 @@ extension LocalFeedLoader {
             switch result {
             case .failure:
                 self.store.deleteCacheFeed { (_) in }
-            case .found(feed: _, timestamp: let timestamp)
+            case .success(.found(feed: _, timestamp: let timestamp))
                     where !FeedCachePolicy.validate(timestamp, against: self.currentDate()):
                 self.store.deleteCacheFeed { (_) in }
-            case .empty, .found: break
+            case .success: break
             }
         }
     }

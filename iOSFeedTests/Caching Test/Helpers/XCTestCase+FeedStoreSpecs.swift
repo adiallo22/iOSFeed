@@ -48,10 +48,10 @@ extension FeedStoreSpecs where Self: XCTestCase {
         
         sut.retrieve { receivedResult in
             switch (expectedResult, receivedResult) {
-            case (.empty, .empty),
+            case (.success(.empty), .success(.empty)),
                  (.failure, .failure):
                 break
-            case let (.found(expectedFeed, expectedTimestamp), .found(receivedFeed, receivedTimestamp)):
+            case let (.success(.found(expectedFeed, expectedTimestamp)), .success(.found(receivedFeed, receivedTimestamp))):
                 XCTAssertEqual(expectedFeed, receivedFeed, file: file, line: line)
                 XCTAssertEqual(expectedTimestamp, receivedTimestamp, file: file, line: line)
             default:
