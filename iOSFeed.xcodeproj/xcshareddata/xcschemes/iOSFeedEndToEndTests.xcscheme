@@ -16,9 +16,9 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C0EDA0DC25D38AE700C1B9E6"
-            BuildableName = "iOSFeed.framework"
-            BlueprintName = "iOSFeed"
+            BlueprintIdentifier = "C03C4E1725EDE5C600D22C84"
+            BuildableName = "iOSFeedEndToEndTests.xctest"
+            BlueprintName = "iOSFeedEndToEndTests"
             ReferencedContainer = "container:iOSFeed.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -28,9 +28,9 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C06CCE1B2643941600DE4E7D"
-               BuildableName = "iOSFeedCacheintegrationTests.xctest"
-               BlueprintName = "iOSFeedCacheintegrationTests"
+               BlueprintIdentifier = "C03C4E1725EDE5C600D22C84"
+               BuildableName = "iOSFeedEndToEndTests.xctest"
+               BlueprintName = "iOSFeedEndToEndTests"
                ReferencedContainer = "container:iOSFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
