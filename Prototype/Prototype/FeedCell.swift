@@ -40,6 +40,9 @@ class FeedCell: UITableViewCell {
         view.backgroundColor = .lightGray
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
+        view.snp.makeConstraints {
+            $0.height.equalTo(400).priority(.high)
+        }
         view.layer.cornerRadius = 10
         return view
     }()
@@ -68,6 +71,7 @@ class FeedCell: UITableViewCell {
     
     private func layout() {
         selectionStyle = .none
+        feedImage.alpha = 0
         contentView.addSubview(mainStack)
         mainStack.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(12)
@@ -84,6 +88,18 @@ extension FeedCell {
         descriptionLabel.text = model.description
         descriptionLabel.isHidden = model.description == nil
         
-        feedImage.image = UIImage(named: model.imageName)
+        fadeIn(UIImage(named: model.imageName))
+    }
+    
+    func fadeIn(_ image: UIImage?) {
+        feedImage.image = image
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0.3,
+            options: [],
+            animations: {
+                self.feedImage.alpha = 1
+            })
     }
 }
