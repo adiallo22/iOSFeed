@@ -9,12 +9,16 @@ import UIKit
 
 private let reuseIdentifier = "FeedCell"
 
-class Feed: UITableViewController {
+class FeedViewController: UITableViewController {
     
     private let feedImages: [FeedImageViewModel] = FeedImageViewModel.prototypeFeed
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureTableView()
+    }
+    
+    private func configureTableView() {
         tableView.backgroundColor = .systemGroupedBackground
         navigationItem.title = "My Feed"
         tableView.register(FeedCell.self, forCellReuseIdentifier: reuseIdentifier)
@@ -24,7 +28,7 @@ class Feed: UITableViewController {
     
 }
 
-extension Feed {
+extension FeedViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

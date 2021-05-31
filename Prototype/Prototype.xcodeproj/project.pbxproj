@@ -12,7 +12,7 @@
 		C0ECF70E266516F30031B013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0ECF70D266516F30031B013 /* Assets.xcassets */; };
 		C0ECF711266516F30031B013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ECF70F266516F30031B013 /* LaunchScreen.storyboard */; };
 		C0ECF71C266518770031B013 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0ECF71B266518770031B013 /* SnapKit */; };
-		C0ECF720266518E80031B013 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF71F266518E80031B013 /* Feed.swift */; };
+		C0ECF720266518E80031B013 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF71F266518E80031B013 /* FeedViewController.swift */; };
 		C0ECF72326652C050031B013 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72226652C050031B013 /* FeedCell.swift */; };
 		C0ECF72626652C340031B013 /* FeedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72526652C340031B013 /* FeedImageViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -24,7 +24,7 @@
 		C0ECF70D266516F30031B013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0ECF710266516F30031B013 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0ECF712266516F30031B013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C0ECF71F266518E80031B013 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		C0ECF71F266518E80031B013 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		C0ECF72226652C050031B013 /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		C0ECF72526652C340031B013 /* FeedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,7 +65,7 @@
 				C0ECF70D266516F30031B013 /* Assets.xcassets */,
 				C0ECF70F266516F30031B013 /* LaunchScreen.storyboard */,
 				C0ECF712266516F30031B013 /* Info.plist */,
-				C0ECF71F266518E80031B013 /* Feed.swift */,
+				C0ECF71F266518E80031B013 /* FeedViewController.swift */,
 				C0ECF72526652C340031B013 /* FeedImageViewModel.swift */,
 				C0ECF72226652C050031B013 /* FeedCell.swift */,
 			);
@@ -149,7 +149,7 @@
 			files = (
 				C0ECF705266516EC0031B013 /* AppDelegate.swift in Sources */,
 				C0ECF72326652C050031B013 /* FeedCell.swift in Sources */,
-				C0ECF720266518E80031B013 /* Feed.swift in Sources */,
+				C0ECF720266518E80031B013 /* FeedViewController.swift in Sources */,
 				C0ECF707266516EC0031B013 /* SceneDelegate.swift in Sources */,
 				C0ECF72626652C340031B013 /* FeedImageViewModel.swift in Sources */,
 			);
