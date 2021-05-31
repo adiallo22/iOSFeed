@@ -11,13 +11,22 @@ private let reuseIdentifier = "FeedCell"
 
 class FeedViewController: UITableViewController {
     
-    private let feedImages: [FeedImageViewModel] = FeedImageViewModel.prototypeFeed
+    private var feedImages = [FeedImageViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        configureRefreshController()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        refreshTableView()
+    }
+    
+}
+
+extension FeedViewController {
     private func configureTableView() {
         tableView.backgroundColor = .systemGroupedBackground
         navigationItem.title = "My Feed"
@@ -26,10 +35,27 @@ class FeedViewController: UITableViewController {
         tableView.separatorStyle = .none
     }
     
+    private func configureRefreshController() {
+        refreshControl = UIRefreshControl()
+        refreshControl?.isEnabled = true
+        refreshControl?.addTarget(self, action: #selector(refreshTableView), for: .valueChanged)
+    }
 }
 
 extension FeedViewController {
-    
+    @objc func refreshTableView() {
+        refreshControl?.beginRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            if self.feedImages.isEmpty {
+                self.feedImages = FeedImageViewModel.prototypeFeed
+                self.tableView.reloadData()
+            }
+            self.refreshControl?.endRefreshing()
+        }
+    }
+}
+
+extension FeedViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -57,5 +83,4 @@ extension FeedViewController {
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 480
     }
-    
 }
