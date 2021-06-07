@@ -43,6 +43,25 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.isShowingLoadingIndicator, false)
     }
     
+    func test_loadCompletes_RenderSuccessfullyLoadedFeed() {
+        let (loader, sut) = makeSUT()
+        let image0 = makeImage(description: "a description", location: "a location")
+        let image1 = makeImage(description: nil, location: "a location")
+        let image2 = makeImage(description: nil, location: nil)
+        let image3 = makeImage(description: "a description", location: nil)
+
+        sut.loadViewIfNeeded()
+        assertThat(sut, isRendering: [])
+        
+        loader.completeLoading(with: [image0], at: 0)
+        assertThat(sut, isRendering: [image0])
+        
+        sut.simulateUserInitiatedFeedRefresh()
+        
+        loader.completeLoading(with: [image0, image1, image2, image3], at: 1)
+        assertThat(sut, isRendering: [image0, image1, image2, image3])
+    }
+    
     class LoadSpy: FeedLoader {
         private var completions = [(FeedLoadResult) -> Void]()
         var loadCallCount: Int {
@@ -53,8 +72,8 @@ class FeedViewControllerTests: XCTestCase {
             completions.append(completion)
         }
         
-        func completeLoading(at index: Int) {
-            completions[index](.success([]))
+        func completeLoading(with feed: [FeedImage] = [], at index: Int) {
+            completions[index](.success(feed))
         }
     }
     
@@ -68,6 +87,52 @@ extension FeedViewControllerTests {
         trackForMemoryLeaks(loader, file: file, line: line)
         return (loader, sut)
     }
+    
+    func makeImage(description: String?, location: String?) -> FeedImage {
+        FeedImage(id: UUID(), description: description, location: location, image: URL(string: "any-url")!)
+    }
+    
+    func assertThat(_ sut: FeedViewController,
+                    hasviewConfiguredFor image: FeedImage,
+                    at index: Int,
+                    file: StaticString = #file, line: UInt = #line) {
+        let view = sut.feedImageView(at: index)
+        
+        guard let cell = view as? FeedImageCell else {
+            return XCTFail("Expected \(FeedImageCell.self) instance, but got \(String(describing: view)) instead", file: file, line: line)
+        }
+        XCTAssertEqual(cell.isShowingLocation, image.location != nil,
+                       "expected `isShowingLocation` to be \(String(image.location != nil)) for view at \(index)", file: file, line: line)
+        XCTAssertEqual(cell.locationText, image.location,
+                       "expected location to be \(String(describing: image.location)) for view at \(index)", file: file, line: line)
+        XCTAssertEqual(cell.descriptionText, image.description,
+                       "expected description to be \(String(describing: image.description)) for view at \(index)", file: file, line: line)
+    }
+    
+    func assertThat(_ sut: FeedViewController,
+                    isRendering feed: [FeedImage],
+                    file: StaticString = #file, line: UInt = #line) {
+        guard sut.numberOfRenderedImageFeeds() == feed.count else {
+            return XCTFail("Expected \(feed.count) images, but got \(sut.numberOfRenderedImageFeeds())", file: file, line: line)
+        }
+        feed.enumerated().forEach { (index, image) in
+            assertThat(sut, hasviewConfiguredFor: image, at: index, file: file, line: line)
+        }
+    }
+}
+
+private extension FeedImageCell {
+    var isShowingLocation: Bool {
+        !locationContainer.isHidden
+    }
+    
+    var locationText: String? {
+        locationLabel.text
+    }
+    
+    var descriptionText: String? {
+        descriptionLabel.text
+    }
 }
 
 private extension FeedViewController {
@@ -77,6 +142,20 @@ private extension FeedViewController {
     
     var isShowingLoadingIndicator: Bool? {
         refreshControl?.isRefreshing
+    }
+    
+    func numberOfRenderedImageFeeds() -> Int {
+        tableView.numberOfRows(inSection: feedImageSections)
+    }
+    
+    func feedImageView(at row: Int) -> UITableViewCell? {
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: feedImageSections)
+        return ds?.tableView(tableView, cellForRowAt: index)
+    }
+    
+    private var feedImageSections: Int {
+        0
     }
 }
 
