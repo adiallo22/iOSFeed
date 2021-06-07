@@ -75,6 +75,22 @@ class FeedViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: [image0])
     }
     
+    func test_loadingFeedIndicator_isVisibleWhileLoadingFeed() {
+        let (loader, sut) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.isShowingLoadingIndicator, true)
+        
+        loader.completeLoading(at: 0)
+        XCTAssertEqual(sut.isShowingLoadingIndicator, false)
+
+        sut.simulateUserInitiatedFeedRefresh()
+        XCTAssertEqual(sut.isShowingLoadingIndicator, true)
+        
+        loader.completeLoadingWithError(at: 1)
+        XCTAssertEqual(sut.isShowingLoadingIndicator, false)
+    }
+    
     class LoadSpy: FeedLoader {
         private var completions = [(FeedLoadResult) -> Void]()
         var loadCallCount: Int {
