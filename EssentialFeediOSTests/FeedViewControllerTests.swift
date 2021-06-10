@@ -108,6 +108,23 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadedImageURLs, [image0.image, image1.image], "expected both image urls once view becomes visible")
     }
     
+    func test_feedImageView_cancelLoadsImageURLWhenNotVisible() {
+        let image0 = makeImage(url: URL(string: "any-url"))
+        let image1 = makeImage(url: URL(string: "any-url1"))
+        let (loader, sut) = makeSUT()
+
+        sut.loadViewIfNeeded()
+        loader.completeLoading(with: [image0, image1])
+        
+        XCTAssertEqual(loader.cancelledImageURLs, [], "expected no cancel img url until view is not visible")
+        
+        sut.simulateFeedImageNOTVisible()
+        XCTAssertEqual(loader.cancelledImageURLs, [image0.image], "expected one cancel image url once view is not visible")
+        
+        sut.simulateFeedImageNOTVisible(at: 1)
+        XCTAssertEqual(loader.cancelledImageURLs, [image0.image, image1.image], "expected both cancel image urls once view is not visible")
+    }
+    
     class LoadSpy: FeedLoader, FeedImageDataLoader {
         
         //MARK: - FeedLoader
@@ -133,9 +150,14 @@ class FeedViewControllerTests: XCTestCase {
         //MARK: - FeedImageDataLoader
 
         private(set) var loadedImageURLs = [URL]()
+        private(set) var cancelledImageURLs = [URL]()
 
         func loadImage(from url: URL) {
             loadedImageURLs.append(url)
+        }
+        
+        func cancelImageDataLoad(from url: URL) {
+            cancelledImageURLs.append(url)
         }
         
     }
@@ -221,8 +243,17 @@ private extension FeedViewController {
         0
     }
     
-    func simulateFeedImageVisible(at index: Int = 0) {
-        _ = feedImageView(at: index)
+    @discardableResult
+    func simulateFeedImageVisible(at index: Int = 0) -> FeedImageCell? {
+        return feedImageView(at: index) as? FeedImageCell
+    }
+    
+    func simulateFeedImageNOTVisible(at index: Int = 0) {
+        let view = simulateFeedImageVisible(at: index)
+        
+        let delegate = tableView.delegate
+        let indexPath = IndexPath(row: index, section: feedImageSections)
+        delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: indexPath)
     }
 }
 
