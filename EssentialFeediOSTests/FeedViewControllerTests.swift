@@ -129,6 +129,33 @@ class FeedViewControllerTests: XCTestCase {
 
     }
     
+    func test_feedImageView_rendersImageLoadedFromURL() {
+        let (loader, sut) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeLoading(with: [makeImage(), makeImage()])
+        let view0 = sut.simulateFeedImageVisible(at: 0)
+        let view1 = sut.simulateFeedImageVisible(at: 1)
+        
+        XCTAssertEqual(view0?.isShowingLoadingImageIndicator, true, "expected to show loading img indicator")
+        XCTAssertEqual(view1?.isShowingLoadingImageIndicator, true, "expected to show loading img indicator")
+
+        loader.completeImageLoader(at: 0)
+        XCTAssertEqual(view0?.renderedImage, .none, "expected no image")
+        XCTAssertEqual(view1?.renderedImage, .none, "expected no image")
+
+        let imageData0 = UIImage.make(withColor: .red).pngData()!
+        loader.completeImageLoader(with: imageData0, at: 0)
+        XCTAssertEqual(view0?.renderedImage, imageData0, "expected image to be rendered for first")
+        XCTAssertEqual(view1?.renderedImage, .none, "expected no image")
+        
+        let imageData1 = UIImage.make(withColor: .orange).pngData()!
+        loader.completeImageLoader(with: imageData1, at: 1)
+        XCTAssertEqual(view0?.renderedImage, imageData0, "expected image to be rendered for first")
+        XCTAssertEqual(view1?.renderedImage, imageData1, "expected image to be rendered for second")
+
+    }
+    
     func test_feedImageViewLoadingIndicator_isVisibleWhileLoadingImage() {
         let image0 = makeImage(url: URL(string: "any-url"))
         let image1 = makeImage(url: URL(string: "any-url1"))
@@ -262,6 +289,10 @@ private extension FeedImageCell {
     var descriptionText: String? {
         descriptionLabel.text
     }
+    
+    var renderedImage: Data? {
+        return feedImageView.image?.pngData()
+    }
 }
 
 private extension FeedViewController {
@@ -310,3 +341,16 @@ private extension UIRefreshControl {
         })
     }
 }
+
+private extension UIImage {
+     static func make(withColor color: UIColor) -> UIImage {
+         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+         UIGraphicsBeginImageContext(rect.size)
+         let context = UIGraphicsGetCurrentContext()!
+         context.setFillColor(color.cgColor)
+         context.fill(rect)
+         let img = UIGraphicsGetImageFromCurrentImageContext()
+         UIGraphicsEndImageContext()
+         return img!
+     }
+ }
