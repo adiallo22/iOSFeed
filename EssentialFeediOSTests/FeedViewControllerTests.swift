@@ -194,6 +194,29 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.image, image1.image], "expected both cancel image urls once view is not visible")
     }
     
+    func test_feedImageViewRetryAction_retriesImageLoad() {
+             let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+             let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+             let (loader, sut) = makeSUT()
+
+             sut.loadViewIfNeeded()
+             loader.completeLoading(with: [image0, image1])
+
+             let view0 = sut.simulateFeedImageVisible(at: 0)
+             let view1 = sut.simulateFeedImageVisible(at: 1)
+        XCTAssertEqual(loader.loadedImageURLs, [image0.image, image1.image], "Expected two image URL request for the two visible views")
+
+             loader.completeImageLoadingWithError(at: 0)
+             loader.completeImageLoadingWithError(at: 1)
+             XCTAssertEqual(loader.loadedImageURLs, [image0.image, image1.image], "Expected only two image URL requests before retry action")
+
+             view0?.simulateRetryAction()
+             XCTAssertEqual(loader.loadedImageURLs, [image0.image, image1.image, image0.image], "Expected third imageURL request after first view retry action")
+
+             view1?.simulateRetryAction()
+             XCTAssertEqual(loader.loadedImageURLs, [image0.image, image1.image, image0.image, image1.image], "Expected fourth imageURL request after second view retry action")
+         }
+    
     func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
         let (loader, sut) = makeSUT()
 
@@ -309,6 +332,10 @@ extension FeedViewControllerTests {
 
 private extension FeedImageCell {
     
+    func simulateRetryAction() {
+        feedImageRetryButton.simulateTap()
+    }
+    
     var isShowingLoadingImageIndicator: Bool {
         return feedImageContainer.isShimmering
     }
@@ -391,5 +418,15 @@ private extension UIImage {
          let img = UIGraphicsGetImageFromCurrentImageContext()
          UIGraphicsEndImageContext()
          return img!
+     }
+ }
+
+private extension UIButton {
+     func simulateTap() {
+         allTargets.forEach { target in
+             actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
+                 (target as NSObject).perform(Selector($0))
+             }
+         }
      }
  }
