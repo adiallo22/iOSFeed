@@ -12,32 +12,21 @@ import iOSFeed
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
     
     private var refreshController: FeedRefreshViewController?
-    private weak var imageLoader: FeedImageDataLoader?
     
-    private var tableModel = [FeedImageCellController]() {
+    var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
-    
-    private var cellControllers = [IndexPath: FeedImageCellController]()
-    
-    public convenience init(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) {
+        
+    convenience init(refreshController: FeedRefreshViewController) {
         self.init()
-        self.refreshController = FeedRefreshViewController(feedLoader: feedLoader)
-        self.imageLoader = imageLoader
+        self.refreshController = refreshController
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        refreshControl = refreshController?.view
-        
-        refreshController?.onRefresh = { [weak self] feed in
-            self?.tableModel = feed.map {
-                FeedImageCellController(model: $0, imageLoader: self!.imageLoader!)
-            }
-        }
-        
         tableView.prefetchDataSource = self
+        refreshControl = refreshController?.view
         refreshController?.refresh()
     }
     
