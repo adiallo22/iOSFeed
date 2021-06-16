@@ -25,7 +25,10 @@ public final class FeedUIComposer {
                                                    loader: FeedImageDataLoader) -> ([FeedImage]) -> Void {
         return { [weak controller] feed in
             controller?.tableModel = feed.map {
-                FeedImageCellController(model: $0, imageLoader: loader)
+                let feedImageViewModel = FeedImageViewModel(model: $0,
+                                                            imageLoader: loader,
+                                                            imageTransformer: UIImage.init)
+                return FeedImageCellController(viewModel: feedImageViewModel)
             }
         }
     }
