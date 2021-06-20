@@ -24,6 +24,8 @@ final class FeedImageViewModel<Image> {
     
     var hasLocation: Bool { location != nil }
     
+    var image: URL { model.image }
+    
     // MARK: - Observers
     var onImageLoad: Observer<Image>?
     var onImageLoadingStateChange: Observer<Bool>?

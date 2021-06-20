@@ -42,6 +42,8 @@
 		C0964F7326769A5D00CB600A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0964F7226769A5D00CB600A /* FeedImageCellController.swift */; };
 		C0964F7F2676C5C600CB600A /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0964F7E2676C5C600CB600A /* FeedUIComposer.swift */; };
 		C0BB3AFF267FB3C30090AF59 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3AFE267FB3C30090AF59 /* UITableView+Extension.swift */; };
+		C0BB3B06267FB8EB0090AF59 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B05267FB8EB0090AF59 /* UIImageView+Extension.swift */; };
+		C0BB3B0D267FB9110090AF59 /* URL+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B0C267FB9110090AF59 /* URL+extensions.swift */; };
 		C0ECF6CF26646C490031B013 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0ECF6CE26646C490031B013 /* SnapKit */; };
 		C0ECF72C26654C0E0031B013 /* FeedViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72B26654C0E0031B013 /* FeedViewControllerTests.swift */; };
 		C0ECF73E266551840031B013 /* XCTestCase+MemoryLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C4E1025EC3E1C00D22C84 /* XCTestCase+MemoryLeak.swift */; };
@@ -144,6 +146,8 @@
 		C0964F7226769A5D00CB600A /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		C0964F7E2676C5C600CB600A /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
 		C0BB3AFE267FB3C30090AF59 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		C0BB3B05267FB8EB0090AF59 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		C0BB3B0C267FB9110090AF59 /* URL+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+extensions.swift"; sourceTree = "<group>"; };
 		C0ECF72A26654C0D0031B013 /* EssentialFeediOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EssentialFeediOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0ECF72B26654C0E0031B013 /* FeedViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewControllerTests.swift; sourceTree = "<group>"; };
 		C0ECF7442665A1800031B013 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -329,6 +333,8 @@
 				C0964F35266DAF3C00CB600A /* FeedImageCell.swift */,
 				C0964F3C2671A44000CB600A /* UIView+Shimmering.swift */,
 				C0BB3AFE267FB3C30090AF59 /* UITableView+Extension.swift */,
+				C0BB3B05267FB8EB0090AF59 /* UIImageView+Extension.swift */,
+				C0BB3B0C267FB9110090AF59 /* URL+extensions.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -707,12 +713,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0964F5526768F6F00CB600A /* FeedImageDataLoader.swift in Sources */,
+				C0BB3B0D267FB9110090AF59 /* URL+extensions.swift in Sources */,
 				C0964F5C2676935B00CB600A /* FeedRefreshViewController.swift in Sources */,
 				C0964F3D2671A44000CB600A /* UIView+Shimmering.swift in Sources */,
 				C0ECF7452665A1800031B013 /* FeedViewController.swift in Sources */,
 				C0964F36266DAF3C00CB600A /* FeedImageCell.swift in Sources */,
 				C028A009267AC1BD0046B10B /* FeedImageViewModel.swift in Sources */,
 				C0964F7326769A5D00CB600A /* FeedImageCellController.swift in Sources */,
+				C0BB3B06267FB8EB0090AF59 /* UIImageView+Extension.swift in Sources */,
 				C0BB3AFF267FB3C30090AF59 /* UITableView+Extension.swift in Sources */,
 				C0289FFD267984BF0046B10B /* FeedViewModel.swift in Sources */,
 				C0964F7F2676C5C600CB600A /* FeedUIComposer.swift in Sources */,

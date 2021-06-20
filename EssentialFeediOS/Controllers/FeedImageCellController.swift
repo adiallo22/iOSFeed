@@ -37,6 +37,7 @@ final class FeedImageCellController {
         cell?.locationLabel.text = viewModel.location
         cell?.descriptionLabel.text = viewModel.description
         cell?.onRetry = viewModel.loadImageData
+        cell?.feedImageView.animateImageShowing(try? viewModel.image.convertToUIIMage())
         
         viewModel.onImageLoad = { [weak cell] image in
             cell?.feedImageView.image = image
