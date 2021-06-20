@@ -68,7 +68,7 @@ extension FeedViewController {
     private func configureTableView() {
         tableView.backgroundColor = .systemGroupedBackground
         navigationItem.title = "My Feed"
-        tableView.register(FeedImageCell.self, forCellReuseIdentifier: "FeedCell")
+        tableView.registerReusableCell(cell: FeedImageCell.self)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
     }
