@@ -53,7 +53,7 @@ final class FeedImageCellController {
     }
     
     private func releaseCellForReuse() {
-        cell = nil
+        viewModel.onImageLoad = nil
     }
     
 }
