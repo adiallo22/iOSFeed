@@ -11,7 +11,7 @@ import UIKit
 import iOSFeed
 import EssentialFeediOS
 
-class FeedViewControllerTests: XCTestCase {
+class FeedUIIntegrationTests: XCTestCase {
     
     func test_feedView_hasTitle() {
         let (_, sut) = makeSUT()
@@ -340,7 +340,7 @@ class FeedViewControllerTests: XCTestCase {
     
 }
 
-extension FeedViewControllerTests {
+extension FeedUIIntegrationTests {
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> (LoadSpy, FeedViewController) {
         let loader = LoadSpy()
         let sut = FeedUIComposer.feedComposedWith(feedLoader: loader, imageLoader: loader)

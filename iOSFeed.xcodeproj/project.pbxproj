@@ -44,10 +44,10 @@
 		C0BB3AFF267FB3C30090AF59 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3AFE267FB3C30090AF59 /* UITableView+Extension.swift */; };
 		C0BB3B06267FB8EB0090AF59 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B05267FB8EB0090AF59 /* UIImageView+Extension.swift */; };
 		C0BB3B0D267FB9110090AF59 /* URL+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B0C267FB9110090AF59 /* URL+extensions.swift */; };
-		C0BB3B1E26816BAC0090AF59 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BB3B1D26816BAC0090AF59 /* Feed.strings */; };
-		C0BB3B2A26816F350090AF59 /* FeedViewControllerTests+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B2926816F350090AF59 /* FeedViewControllerTests+Helper.swift */; };
+		C0BB3B2A26816F350090AF59 /* FeedUIIntegrationTests+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B2926816F350090AF59 /* FeedUIIntegrationTests+Helper.swift */; };
+		C0BB3B3B268170560090AF59 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BB3B3D268170560090AF59 /* Feed.strings */; };
 		C0ECF6CF26646C490031B013 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0ECF6CE26646C490031B013 /* SnapKit */; };
-		C0ECF72C26654C0E0031B013 /* FeedViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72B26654C0E0031B013 /* FeedViewControllerTests.swift */; };
+		C0ECF72C26654C0E0031B013 /* FeedUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72B26654C0E0031B013 /* FeedUIIntegrationTests.swift */; };
 		C0ECF73E266551840031B013 /* XCTestCase+MemoryLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C4E1025EC3E1C00D22C84 /* XCTestCase+MemoryLeak.swift */; };
 		C0ECF7452665A1800031B013 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF7442665A1800031B013 /* FeedViewController.swift */; };
 		C0EDA0E225D38AE700C1B9E6 /* iOSFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = C0EDA0E025D38AE700C1B9E6 /* iOSFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -150,10 +150,11 @@
 		C0BB3AFE267FB3C30090AF59 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		C0BB3B05267FB8EB0090AF59 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		C0BB3B0C267FB9110090AF59 /* URL+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+extensions.swift"; sourceTree = "<group>"; };
-		C0BB3B1D26816BAC0090AF59 /* Feed.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Feed.strings; sourceTree = "<group>"; };
-		C0BB3B2926816F350090AF59 /* FeedViewControllerTests+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedViewControllerTests+Helper.swift"; sourceTree = "<group>"; };
+		C0BB3B2926816F350090AF59 /* FeedUIIntegrationTests+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+Helper.swift"; sourceTree = "<group>"; };
+		C0BB3B3C268170560090AF59 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
+		C0BB3B432681714B0090AF59 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Feed.strings; sourceTree = "<group>"; };
 		C0ECF72A26654C0D0031B013 /* EssentialFeediOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EssentialFeediOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		C0ECF72B26654C0E0031B013 /* FeedViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewControllerTests.swift; sourceTree = "<group>"; };
+		C0ECF72B26654C0E0031B013 /* FeedUIIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIIntegrationTests.swift; sourceTree = "<group>"; };
 		C0ECF7442665A1800031B013 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		C0EDA0DD25D38AE700C1B9E6 /* iOSFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = iOSFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EDA0E025D38AE700C1B9E6 /* iOSFeed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSFeed.h; sourceTree = "<group>"; };
@@ -243,8 +244,8 @@
 			isa = PBXGroup;
 			children = (
 				C0202932265DD2A700CBB558 /* Info.plist */,
-				C0ECF72B26654C0E0031B013 /* FeedViewControllerTests.swift */,
-				C0BB3B2926816F350090AF59 /* FeedViewControllerTests+Helper.swift */,
+				C0ECF72B26654C0E0031B013 /* FeedUIIntegrationTests.swift */,
+				C0BB3B3A2681700A0090AF59 /* Helpers */,
 				C0ECF72A26654C0D0031B013 /* EssentialFeediOSTests-Bridging-Header.h */,
 			);
 			path = EssentialFeediOSTests;
@@ -253,7 +254,7 @@
 		C0289FFB267984AD0046B10B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C0BB3B1D26816BAC0090AF59 /* Feed.strings */,
+				C0BB3B3D268170560090AF59 /* Feed.strings */,
 				C0289FFC267984BF0046B10B /* FeedViewModel.swift */,
 				C028A008267AC1BD0046B10B /* FeedImageViewModel.swift */,
 			);
@@ -351,6 +352,14 @@
 				C0964F7E2676C5C600CB600A /* FeedUIComposer.swift */,
 			);
 			path = Composers;
+			sourceTree = "<group>";
+		};
+		C0BB3B3A2681700A0090AF59 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C0BB3B2926816F350090AF59 /* FeedUIIntegrationTests+Helper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		C0ECF733266550650031B013 /* Frameworks */ = {
@@ -649,6 +658,7 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
 			);
 			mainGroup = C0EDA0D325D38AE700C1B9E6;
 			packageReferences = (
@@ -673,7 +683,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0BB3B1E26816BAC0090AF59 /* Feed.strings in Resources */,
+				C0BB3B3B268170560090AF59 /* Feed.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,10 +748,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0BB3B2A26816F350090AF59 /* FeedViewControllerTests+Helper.swift in Sources */,
+				C0BB3B2A26816F350090AF59 /* FeedUIIntegrationTests+Helper.swift in Sources */,
 				C0ECF73E266551840031B013 /* XCTestCase+MemoryLeak.swift in Sources */,
 				C0964F2F266D35BE00CB600A /* GlobalTestHelpers.swift in Sources */,
-				C0ECF72C26654C0E0031B013 /* FeedViewControllerTests.swift in Sources */,
+				C0ECF72C26654C0E0031B013 /* FeedUIIntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,6 +841,18 @@
 			targetProxy = C0EDA0F225D38B0A00C1B9E6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C0BB3B3D268170560090AF59 /* Feed.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0BB3B3C268170560090AF59 /* en */,
+				C0BB3B432681714B0090AF59 /* fr */,
+			);
+			name = Feed.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C0202935265DD2A700CBB558 /* Debug */ = {
@@ -1017,6 +1039,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1081,6 +1104,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
