@@ -14,7 +14,7 @@ import EssentialFeediOS
 class FeedViewControllerTests: XCTestCase {
     
     func test_feedView_hasTitle() {
-        let (loader, sut) = makeSUT()
+        let (_, sut) = makeSUT()
         
         sut.loadViewIfNeeded()
         
