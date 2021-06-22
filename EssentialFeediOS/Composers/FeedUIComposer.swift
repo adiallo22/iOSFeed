@@ -14,7 +14,13 @@ public final class FeedUIComposer {
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
         let feedViewModel = FeedViewModel(feedLoader: feedLoader)
         
-        let feedController = FeedUIComposer.makeFeedViewController(feedViewModel: feedViewModel, with: "My Feed")
+        let title = NSLocalizedString("FEED_VIEW_TITLE",
+                          tableName: "Feed",
+                          bundle: Bundle(for: FeedUIComposer.self),
+                          comment: "title for feed screen")
+        
+        let feedController = FeedUIComposer.makeFeedViewController(feedViewModel: feedViewModel,
+                                                                   with: title)
         
         feedViewModel.onFeedLoad = FeedUIComposer.adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
         
