@@ -21,6 +21,18 @@ class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(sut.title, localized("FEED_VIEW_TITLE"))
     }
     
+    func test_loadCompletion_dispatchesFromBackgroundToMainThread() {
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        let exp = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeLoading()
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
     func test_loadActions_RequestFeedFromLoader() {
         let (loader, sut) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0)

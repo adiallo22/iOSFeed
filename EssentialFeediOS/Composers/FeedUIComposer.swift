@@ -14,7 +14,7 @@ public final class FeedUIComposer {
     private init() { }
     
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
+        let feedViewModel = FeedViewModel(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
         
         let title = NSLocalizedString("FEED_VIEW_TITLE",
                           tableName: "Feed",
@@ -49,5 +49,23 @@ extension FeedUIComposer {
         let feedController = FeedViewController(refreshController: refreshController)
         feedController.title = title
         return feedController
+    }
+}
+
+private final class MainQueueDispatchDecorator: FeedLoader {
+    private let decoratee: FeedLoader
+    init(decoratee: FeedLoader) {
+        self.decoratee = decoratee
+    }
+    func load(_ completion: @escaping (FeedLoadResult) -> Void) {
+        decoratee.load { (result) in
+            if Thread.isMainThread {
+                completion(result)
+            } else {
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+        }
     }
 }
