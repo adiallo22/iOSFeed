@@ -24,7 +24,7 @@ public final class FeedUIComposer {
         let feedController = FeedUIComposer.makeFeedViewController(feedViewModel: feedViewModel,
                                                                    with: title)
         
-        feedViewModel.onFeedLoad = FeedUIComposer.adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
+        feedViewModel.onFeedLoad = FeedUIComposer.adaptFeedToCellControllers(forwardingTo: feedController, loader: MainQueueDispatchDecorator(decoratee: imageLoader))
         
         return feedController
     }
@@ -49,25 +49,5 @@ extension FeedUIComposer {
         let feedController = FeedViewController(refreshController: refreshController)
         feedController.title = title
         return feedController
-    }
-}
-
-private final class MainQueueDispatchDecorator<T> {
-    private let decoratee: T
-    init(decoratee: T) {
-        self.decoratee = decoratee
-    }
-    func dispatch(_ completion: @escaping () -> Void) {
-            Thread.isMainThread
-                ? completion()
-                : DispatchQueue.main.async { completion() }
-    }
-}
-
-extension MainQueueDispatchDecorator: FeedLoader where T == FeedLoader {
-    func load(_ completion: @escaping (FeedLoadResult) -> Void) {
-        decoratee.load { [weak self] (result) in
-            self?.dispatch { completion(result) }
-        }
     }
 }

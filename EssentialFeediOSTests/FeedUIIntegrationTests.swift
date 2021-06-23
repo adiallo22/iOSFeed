@@ -33,6 +33,21 @@ class FeedUIIntegrationTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
+    func test_loadImageData_dispatchesFromBackgroundToMainThread() {
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        loader.completeLoading(with: [makeImage()], at: 0)
+        _ = sut.simulateFeedImageVisible(at: 0)
+        
+        let exp = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeImageLoader(with: UIImage.make(withColor: .red).pngData()!, at: 0)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
     func test_loadActions_RequestFeedFromLoader() {
         let (loader, sut) = makeSUT()
         XCTAssertEqual(loader.loadFeedCallCount, 0)
