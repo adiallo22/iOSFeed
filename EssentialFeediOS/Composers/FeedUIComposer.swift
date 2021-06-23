@@ -11,6 +11,8 @@ import iOSFeed
 
 public final class FeedUIComposer {
     
+    private init() { }
+    
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
         let feedViewModel = FeedViewModel(feedLoader: feedLoader)
         
