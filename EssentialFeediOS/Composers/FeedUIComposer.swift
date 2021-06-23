@@ -52,20 +52,22 @@ extension FeedUIComposer {
     }
 }
 
-private final class MainQueueDispatchDecorator: FeedLoader {
-    private let decoratee: FeedLoader
-    init(decoratee: FeedLoader) {
+private final class MainQueueDispatchDecorator<T> {
+    private let decoratee: T
+    init(decoratee: T) {
         self.decoratee = decoratee
     }
+    func dispatch(_ completion: @escaping () -> Void) {
+            Thread.isMainThread
+                ? completion()
+                : DispatchQueue.main.async { completion() }
+    }
+}
+
+extension MainQueueDispatchDecorator: FeedLoader where T == FeedLoader {
     func load(_ completion: @escaping (FeedLoadResult) -> Void) {
-        decoratee.load { (result) in
-            if Thread.isMainThread {
-                completion(result)
-            } else {
-                DispatchQueue.main.async {
-                    completion(result)
-                }
-            }
+        decoratee.load { [weak self] (result) in
+            self?.dispatch { completion(result) }
         }
     }
 }
