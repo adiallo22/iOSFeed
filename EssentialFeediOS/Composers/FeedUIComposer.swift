@@ -11,12 +11,20 @@ import iOSFeed
 
 public final class FeedUIComposer {
     
+    private init() { }
+    
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
-        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
-        let feedController = FeedViewController(refreshController: refreshController)
+        let feedViewModel = FeedViewModel(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
         
-        feedViewModel.onFeedLoad = FeedUIComposer.adaptFeedToCellControllers(forwardingTo: feedController, loader: imageLoader)
+        let title = NSLocalizedString("FEED_VIEW_TITLE",
+                          tableName: "Feed",
+                          bundle: Bundle(for: FeedUIComposer.self),
+                          comment: "title for feed screen")
+        
+        let feedController = FeedUIComposer.makeFeedViewController(feedViewModel: feedViewModel,
+                                                                   with: title)
+        
+        feedViewModel.onFeedLoad = FeedUIComposer.adaptFeedToCellControllers(forwardingTo: feedController, loader: MainQueueDispatchDecorator(decoratee: imageLoader))
         
         return feedController
     }
@@ -33,4 +41,13 @@ public final class FeedUIComposer {
         }
     }
     
+}
+
+extension FeedUIComposer {
+    static func makeFeedViewController(feedViewModel: FeedViewModel, with title: String) -> FeedViewController {
+        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
+        let feedController = FeedViewController(refreshController: refreshController)
+        feedController.title = title
+        return feedController
+    }
 }
