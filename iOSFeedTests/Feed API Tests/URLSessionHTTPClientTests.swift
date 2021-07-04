@@ -120,7 +120,7 @@ class URLSessionHTTPClientTests: XCTestCase {
                            error: Error?,
                            file: StaticString = #file,
                            line: UInt = #line) -> HTTPResponse {
-
+ 
         let sut = makeSUT(file: file, line: line)
         URLProtocolStubs.stub(data: data, response: response, error: error)
         let exp = expectation(description: "wait for expectation")
