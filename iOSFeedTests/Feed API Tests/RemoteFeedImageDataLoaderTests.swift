@@ -20,10 +20,15 @@ class RemoteFeedImageDataLoader {
         self.client = client
     }
     
-    func loadImageData(from url: URL, completion: @escaping (HTTPResponse) -> Void) {
+    func loadImageData(from url: URL, completion: @escaping FeedImageDataLoaderResult) {
         client.get(from: url) { result in
             switch result {
-            case .success((_, _)): completion(.failure(Error.invalidData))
+            case .success((let data, let response)):
+                if response.statusCode == 200, !data.isEmpty {
+                    completion(.success(data))
+                } else {
+                    completion(.failure(Error.invalidData))
+                }
             case .failure(let error): completion(.failure(error))
             }
         }
@@ -88,6 +93,15 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         })
     }
     
+    func test_loadImageDataFromURL_deliversReceivedNonEmptyDataOn200HTTPResponse() {
+        let (sut, client) = makeSUT()
+        let nonEmptyData = Data("non-empty data".utf8)
+        
+        expect(sut, toCompleteWith: .success(nonEmptyData), when: {
+            client.complete(withStatusCode: 200, data: nonEmptyData)
+        })
+    }
+    
     //MARK: - Helpers
     
     private func makeSUT(url: URL = anyURL(), file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, client: HTTPClientSpy) {
@@ -102,12 +116,12 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         return Data("any data".utf8)
     }
     
-    private func failure(_ error: RemoteFeedImageDataLoader.Error) -> HTTPResponse {
+    private func failure(_ error: RemoteFeedImageDataLoader.Error) -> (Result<Data, Error>) {
         return .failure(error)
     }
     
     private func expect(_ sut: RemoteFeedImageDataLoader,
-                        toCompleteWith expectedResult: HTTPResponse,
+                        toCompleteWith expectedResult: Result<Data, Error>,
                         when action: () -> Void,
                         file: StaticString = #file, line: UInt = #line) {
         let url = URL(string: "https://a-given-url.com")!
@@ -116,8 +130,7 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         sut.loadImageData(from: url) { receivedResult in
             switch (receivedResult, expectedResult) {
             case let (.success(receivedData), .success(expectedData)):
-                XCTAssertEqual(receivedData.0, expectedData.0, file: file, line: line)
-                XCTAssertEqual(receivedData.1, expectedData.1, file: file, line: line)
+                XCTAssertEqual(receivedData, expectedData, file: file, line: line)
 
             case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
