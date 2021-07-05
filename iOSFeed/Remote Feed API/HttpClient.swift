@@ -10,8 +10,13 @@ import Foundation
 
 public typealias HTTPResponse = Result<(Data, HTTPURLResponse), Error>
 
+public protocol HTTPClientTask {
+    func cancel()
+}
+
 public protocol HTTPClient {
     ///The completion handler can be invoked in any thread
     ///Client is responsible to dispatch to the appropriate thread if neccessasry
-    func get(from url: URL, completion: @escaping (HTTPResponse) -> Void)
+    @discardableResult
+    func get(from url: URL, completion: @escaping (HTTPResponse) -> Void) -> HTTPClientTask
 }
