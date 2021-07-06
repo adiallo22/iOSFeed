@@ -47,13 +47,11 @@ class iOSFeedEndToEndTests: XCTestCase {
     //MARK: - Helpers
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> (Result<Data, Error>)? {
-        let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
-        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedImageDataLoader(client: client)
-        trackForMemoryLeaks(client, file: file, line: line)
+        let loader = RemoteFeedImageDataLoader(client: ephemeralClient())
         trackForMemoryLeaks(loader, file: file, line: line)
         
         let exp = expectation(description: "Wait for load completion")
+        let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
         
         var receivedResult: (Result<Data, Error>)?
         _ = loader.loadImage(from: url) { result in
@@ -66,10 +64,7 @@ class iOSFeedEndToEndTests: XCTestCase {
     }
     
     private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> FeedLoadResult? {        
-        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedLoader(client: client, url: feedTestServerURL)
-        
-        trackForMemoryLeaks(client, file: file, line: line)
+        let loader = RemoteFeedLoader(client: ephemeralClient(), url: feedTestServerURL)
         trackForMemoryLeaks(loader, file: file, line: line)
         
         var expectedResult: FeedLoadResult?
@@ -80,6 +75,12 @@ class iOSFeedEndToEndTests: XCTestCase {
         }
         wait(for: [exp], timeout: 5.0)
         return expectedResult
+    }
+    
+    private func ephemeralClient(file: StaticString = #file, line: UInt = #line) -> HTTPClient {
+        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        trackForMemoryLeaks(client, file: file, line: line)
+        return client
     }
     
     private func expectedItem(at index: Int) -> FeedImage {
