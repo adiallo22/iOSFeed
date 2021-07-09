@@ -13,7 +13,17 @@ public typealias ImageDataLoaderRESULT = Result<Data, Swift.Error>
 public final class LocalFeedImageDataLoader: FeedImageDataLoader {
     private let store: FeedImageDataStore
     
-    private final class Task: FeedImageDataLoaderTask {
+    public init(store: FeedImageDataStore) {
+        self.store = store
+    }
+    
+}
+
+// MARK: - loadImage
+
+extension LocalFeedImageDataLoader {
+    
+    private final class LoadImageDataTask: FeedImageDataLoaderTask {
         private var completion: ((ImageDataLoaderRESULT) -> Void)?
 
             init(_ completion: @escaping (ImageDataLoaderRESULT) -> Void) {
@@ -33,25 +43,27 @@ public final class LocalFeedImageDataLoader: FeedImageDataLoader {
             }
         }
     
-    public enum Error: Swift.Error {
+    public enum LoadError: Swift.Error {
         case failed
         case notFound
     }
     
-    public init(store: FeedImageDataStore) {
-        self.store = store
-    }
-    
     public func loadImage(from url: URL, _ completion: @escaping FeedImageDataLoaderResult) -> FeedImageDataLoaderTask {
-        let task = Task(completion)
+        let task = LoadImageDataTask(completion)
         store.retrieve(dataForURL: url) { [weak self] result in
             guard self != nil else { return }
             task.complete(with: result
-                            .mapError { _ in Error.failed }
-                            .flatMap { data in data.map { .success($0) } ?? .failure(Error.notFound) })
+                            .mapError { _ in LoadError.failed }
+                            .flatMap { data in data.map { .success($0) } ?? .failure(LoadError.notFound) })
         }
         return task
     }
+    
+}
+
+// MARK: - save
+
+extension LocalFeedImageDataLoader {
     
     public typealias SaveResult = Result<Void, Swift.Error>
     
