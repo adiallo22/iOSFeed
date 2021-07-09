@@ -247,6 +247,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C00977F22698DEEE003880A6 /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				C00977F02698DBBB003880A6 /* FeedImageDataStore.swift */,
+				C0F226672600514B00882EB2 /* FeedStore.swift */,
+			);
+			path = Interfaces;
+			sourceTree = "<group>";
+		};
+		C00977F32698DF1D003880A6 /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+				C00977EE2698DB7F003880A6 /* LocalFeedImageDataLoader.swift */,
+				C0F2265F260050CF00882EB2 /* LocalFeedLoader.swift */,
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		C00977F42698DF3A003880A6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C0F226742602F5A500882EB2 /* LocalFeedItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C0202924265DD2A700CBB558 /* EssentialFeediOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -494,11 +520,9 @@
 			isa = PBXGroup;
 			children = (
 				C05B4CE9261BFB6D00C01557 /* FeedCachePolicy.swift */,
-				C0F2265F260050CF00882EB2 /* LocalFeedLoader.swift */,
-				C00977EE2698DB7F003880A6 /* LocalFeedImageDataLoader.swift */,
-				C00977F02698DBBB003880A6 /* FeedImageDataStore.swift */,
-				C0F226672600514B00882EB2 /* FeedStore.swift */,
-				C0F226742602F5A500882EB2 /* LocalFeedItem.swift */,
+				C00977F42698DF3A003880A6 /* Models */,
+				C00977F22698DEEE003880A6 /* Interfaces */,
+				C00977F32698DF1D003880A6 /* Implementations */,
 				C06CCDEC263EF33F00DE4E7D /* Infrastructure */,
 			);
 			path = "Local Feed Cache";
