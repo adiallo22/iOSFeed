@@ -9,6 +9,8 @@
 import XCTest
 import iOSFeed
 
+private typealias ImageDataLoaderRESULT = Result<Data, Swift.Error>
+
 protocol FeedImageDataStore {
     typealias Result = Swift.Result<Data?, Error>
     func retrieve(dataForURL url: URL, completion: @escaping (Result) -> Void)
@@ -18,13 +20,13 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     private let store: FeedImageDataStore
     
     private final class Task: FeedImageDataLoaderTask {
-        private var completion: ((Result<Data, Swift.Error>) -> Void)?
+        private var completion: ((ImageDataLoaderRESULT) -> Void)?
 
-            init(_ completion: @escaping (Result<Data, Swift.Error>) -> Void) {
+            init(_ completion: @escaping (ImageDataLoaderRESULT) -> Void) {
                 self.completion = completion
             }
 
-            func complete(with result: (Result<Data, Swift.Error>)) {
+            func complete(with result: ImageDataLoaderRESULT) {
                 completion?(result)
             }
 
@@ -48,7 +50,8 @@ final class LocalFeedImageDataLoader: FeedImageDataLoader {
     
     func loadImage(from url: URL, _ completion: @escaping FeedImageDataLoaderResult) -> FeedImageDataLoaderTask {
         let task = Task(completion)
-        store.retrieve(dataForURL: url) { result in
+        store.retrieve(dataForURL: url) { [weak self] result in
+            guard self != nil else { return }
             task.complete(with: result
                             .mapError { _ in Error.failed }
                             .flatMap { data in data.map { .success($0) } ?? .failure(Error.notFound) })
@@ -116,6 +119,19 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         XCTAssertTrue(received.isEmpty, "Expected no received results after cancelling task")
     }
     
+    func test_loadImageDataFromURL_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
+        let store = StoreSpy()
+        var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
+
+        var received = [ImageDataLoaderRESULT]()
+        _ = sut?.loadImage(from: anyURL()) { received.append($0) }
+
+        sut = nil
+        store.complete(with: anyData())
+
+        XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
+    }
+    
     // MARK: - Helpers
     
     private func makeSUT(currentDate: @escaping () -> Date = Date.init,
@@ -128,11 +144,11 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         return (sut, store)
     }
     
-    private func failed() -> Result<Data, Error> {
+    private func failed() -> ImageDataLoaderRESULT {
         .failure(LocalFeedImageDataLoader.Error.failed)
     }
     
-    private func notFound() -> Result<Data, Error> {
+    private func notFound() -> ImageDataLoaderRESULT {
         return .failure(LocalFeedImageDataLoader.Error.notFound)
     }
     
@@ -141,7 +157,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
     }
     
     private func expect(_ sut: LocalFeedImageDataLoader,
-                        toCompleteWith expectedResult: Result<Data, Error>,
+                        toCompleteWith expectedResult: ImageDataLoaderRESULT,
                         when action: () -> Void,
                         file: StaticString = #file,
                         line: UInt = #line) {
