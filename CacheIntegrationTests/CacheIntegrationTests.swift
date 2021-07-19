@@ -51,6 +51,22 @@ class CacheIntegrationTests: XCTestCase {
 
     }
     
+    func test_saveImageData_overridesSavedImageDataOnASeparateInstance() {
+        let imageLoaderToPerformFirstSave = makeImageLoader()
+        let imageLoaderToPerformLastSave = makeImageLoader()
+        let imageLoaderToPerformLoad = makeImageLoader()
+        let feedLoader = makeFeedLoader()
+        let image = uniqueImage()
+        let firstImageData = Data("first".utf8)
+        let lastImageData = Data("last".utf8)
+        
+        save([image], on: feedLoader)
+        save(firstImageData, for: image.image, with: imageLoaderToPerformFirstSave)
+        save(lastImageData, for: image.image, with: imageLoaderToPerformLastSave)
+        
+        expect(imageLoaderToPerformLoad, toLoad: lastImageData, for: image.image)
+    }
+    
 }
 
 //MARK: - Helpers
@@ -61,7 +77,7 @@ extension CacheIntegrationTests {
         let imageLoaderToPerformSave = makeImageLoader()
         let imageLoaderToPerformLoad = makeImageLoader()
         let feedLoader = makeFeedLoader()
-        let image = FeedImage(id: UUID(), description: "", location: "", image: anyURL())
+        let image = uniqueImage()
         let dataToSave = anyData()
         
         save([image], on: feedLoader)
@@ -148,6 +164,8 @@ extension CacheIntegrationTests {
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
+    
+    func uniqueImage() -> FeedImage { FeedImage(id: UUID(), description: "", location: "", image: anyURL()) }
     
     private func makeImageLoader(file: StaticString = #file, line: UInt = #line) -> LocalFeedImageDataLoader {
         let storeURL = testSpecificStoreURL()
