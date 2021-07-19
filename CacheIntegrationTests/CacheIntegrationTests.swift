@@ -27,6 +27,19 @@ class CacheIntegrationTests: XCTestCase {
         expect(sut, toLoad: [])
     }
     
+    func test_loadImageData_deliversSavedDataOnASeparateInstance() {
+        let imageLoaderToPerformSave = makeImageLoader()
+        let imageLoaderToPerformLoad = makeImageLoader()
+        let feedLoader = makeFeedLoader()
+        let image = uniqueImage()
+        let dataToSave = anyData()
+        
+        save([image], on: feedLoader)
+        save(dataToSave, for: image.image, with: imageLoaderToPerformSave)
+        
+        expect(imageLoaderToPerformLoad, toLoad: dataToSave, for: image.image)
+    }
+    
     func test_load_DeliversItemSavedOnSeparateInstance() {
         let sutToPerformSave = makeFeedLoader()
         let sutToPerformLoad = makeFeedLoader()
@@ -67,24 +80,33 @@ class CacheIntegrationTests: XCTestCase {
         expect(imageLoaderToPerformLoad, toLoad: lastImageData, for: image.image)
     }
     
+    func test_validateFeedCache_doesNotDeleteRecentlySavedFeed() {
+        let feedLoaderToPerformSave = makeFeedLoader()
+        let feedLoaderToPerformValidation = makeFeedLoader()
+        let feed = uniqueItems().models
+
+        save(feed, on: feedLoaderToPerformSave)
+        validateCache(with: feedLoaderToPerformValidation)
+
+        expect(feedLoaderToPerformSave, toLoad: feed)
+    }
+    
+    func test_validateFeedCache_deletesFeedSavedInADistantPast() {
+        let feedLoaderToPerformSave = makeFeedLoader(currentDate: .distantPast)
+        let feedLoaderToPerformValidation = makeFeedLoader(currentDate: Date())
+        let feed = uniqueItems().models
+        
+        save(feed, on: feedLoaderToPerformSave)
+        validateCache(with: feedLoaderToPerformValidation)
+        
+        expect(feedLoaderToPerformSave, toLoad: [])
+    }
+    
 }
 
 //MARK: - Helpers
 
 extension CacheIntegrationTests {
-    
-    func test_loadImageData_deliversSavedDataOnASeparateInstance() {
-        let imageLoaderToPerformSave = makeImageLoader()
-        let imageLoaderToPerformLoad = makeImageLoader()
-        let feedLoader = makeFeedLoader()
-        let image = uniqueImage()
-        let dataToSave = anyData()
-        
-        save([image], on: feedLoader)
-        save(dataToSave, for: image.image, with: imageLoaderToPerformSave)
-        
-        expect(imageLoaderToPerformLoad, toLoad: dataToSave, for: image.image)
-    }
     
     func expect(_ sut: LocalFeedLoader,
                 toLoad expectedFeed: [FeedImage],
@@ -151,15 +173,28 @@ extension CacheIntegrationTests {
         wait(for: [exp], timeout: 1.0)
     }
     
+    private func validateCache(with loader: LocalFeedLoader, file: StaticString = #file, line: UInt = #line) {
+        let saveExp = expectation(description: "Wait for save completion")
+        loader.validateCache() { result in
+            if case let Result.failure(error) = result {
+                XCTFail("Expected to validate feed successfully, got error: \(error)", file: file, line: line)
+            }
+            saveExp.fulfill()
+        }
+        wait(for: [saveExp], timeout: 1.0)
+    }
+    
 }
 
 extension CacheIntegrationTests {
-    func makeFeedLoader(file: StaticString = #file, line: UInt = #line) -> LocalFeedLoader {
+    private func makeFeedLoader(currentDate: Date = Date(),
+                                file: StaticString = #file,
+                                line: UInt = #line) -> LocalFeedLoader {
 //        let storeBundle = Bundle(for: CoreDataFeedStore.self)
         let storeURL = testSpecificStoreURL()
         let store = CodableFeedStore(storeURL: storeURL)
 //        let store = try! CoreDataFeedStore(storeURL: storeURL, bundle: storeBundle)
-        let sut = LocalFeedLoader(store: store, currentDate: Date.init)
+        let sut = LocalFeedLoader(store: store, currentDate: { currentDate })
         trackForMemoryLeaks(store, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return sut
