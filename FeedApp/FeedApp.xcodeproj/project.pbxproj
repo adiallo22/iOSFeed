@@ -13,7 +13,26 @@
 		C09C7ED626A7BA1800A73866 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09C7ED426A7BA1800A73866 /* Main.storyboard */; };
 		C09C7ED826A7BA1E00A73866 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C09C7ED726A7BA1E00A73866 /* Assets.xcassets */; };
 		C09C7EDB26A7BA1E00A73866 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09C7ED926A7BA1E00A73866 /* LaunchScreen.storyboard */; };
+		C09C7EE526A7BBC100A73866 /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C09C7EE326A7BBC100A73866 /* EssentialFeediOS.framework */; };
+		C09C7EE626A7BBC100A73866 /* EssentialFeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C09C7EE326A7BBC100A73866 /* EssentialFeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C09C7EE726A7BBC100A73866 /* iOSFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C09C7EE426A7BBC100A73866 /* iOSFeed.framework */; };
+		C09C7EE826A7BBC100A73866 /* iOSFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C09C7EE426A7BBC100A73866 /* iOSFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C09C7EE926A7BBC100A73866 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C09C7EE826A7BBC100A73866 /* iOSFeed.framework in Embed Frameworks */,
+				C09C7EE626A7BBC100A73866 /* EssentialFeediOS.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C09C7ECB26A7BA1800A73866 /* FeedApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +43,8 @@
 		C09C7ED726A7BA1E00A73866 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C09C7EDA26A7BA1E00A73866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C09C7EDC26A7BA1E00A73866 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C09C7EE326A7BBC100A73866 /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C09C7EE426A7BBC100A73866 /* iOSFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = iOSFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09C7EE726A7BBC100A73866 /* iOSFeed.framework in Frameworks */,
+				C09C7EE526A7BBC100A73866 /* EssentialFeediOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +65,7 @@
 			children = (
 				C09C7ECD26A7BA1800A73866 /* FeedApp */,
 				C09C7ECC26A7BA1800A73866 /* Products */,
+				C09C7EE226A7BBC100A73866 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +91,15 @@
 			path = FeedApp;
 			sourceTree = "<group>";
 		};
+		C09C7EE226A7BBC100A73866 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C09C7EE326A7BBC100A73866 /* EssentialFeediOS.framework */,
+				C09C7EE426A7BBC100A73866 /* iOSFeed.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,6 +110,7 @@
 				C09C7EC726A7BA1800A73866 /* Sources */,
 				C09C7EC826A7BA1800A73866 /* Frameworks */,
 				C09C7EC926A7BA1800A73866 /* Resources */,
+				C09C7EE926A7BBC100A73866 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
