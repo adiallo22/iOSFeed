@@ -25,6 +25,8 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureTableView()
+        
         tableView.prefetchDataSource = self
         refreshControl = refreshController?.view
         refreshController?.refresh()
@@ -39,7 +41,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        cellForRow(at: indexPath).view()
+        cellForRow(at: indexPath).view(in: tableView)
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -60,4 +62,14 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         cellForRow(at: indexPath).cancelLoad()
     }
     
+}
+
+extension FeedViewController {
+    private func configureTableView() {
+        tableView.backgroundColor = .systemGroupedBackground
+        navigationItem.title = "My Feed"
+        tableView.registerReusableCell(cell: FeedImageCell.self)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+    }
 }

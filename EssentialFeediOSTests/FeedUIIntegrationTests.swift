@@ -11,7 +11,42 @@ import UIKit
 import iOSFeed
 import EssentialFeediOS
 
-class FeedViewControllerTests: XCTestCase {
+class FeedUIIntegrationTests: XCTestCase {
+    
+    func test_feedView_hasTitle() {
+        let (_, sut) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.title, localized("FEED_VIEW_TITLE"))
+    }
+    
+    func test_loadCompletion_dispatchesFromBackgroundToMainThread() {
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        let exp = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeLoading()
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func test_loadImageData_dispatchesFromBackgroundToMainThread() {
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        
+        loader.completeLoading(with: [makeImage()], at: 0)
+        _ = sut.simulateFeedImageVisible(at: 0)
+        
+        let exp = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            loader.completeImageLoader(with: UIImage.make(withColor: .red).pngData()!, at: 0)
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+    }
     
     func test_loadActions_RequestFeedFromLoader() {
         let (loader, sut) = makeSUT()
@@ -263,6 +298,17 @@ class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.cancelledImageURLs, [image0.image, image1.image], "Expected second cancelled image URL request once second image is not near visible anymore")
     }
     
+    func test_feedImageView_doesNotRenderLoadedImageViewWhenNotVisibleAnymore() {
+        let (loader, sut) = makeSUT()
+        sut.loadViewIfNeeded()
+        loader.completeLoading(with: [makeImage()])
+        
+        let view = sut.simulateFeedImageNOTVisible()
+        loader.completeImageLoader(with: UIImage.make(withColor: .red).pngData()!)
+        
+        XCTAssertNil(view?.renderedImage, "Expected no rendered image when an image load finishes after the view is not visible anymore")
+    }
+    
     class LoadSpy: FeedLoader, FeedImageDataLoader {
         
         //MARK: - FeedLoader
@@ -321,7 +367,7 @@ class FeedViewControllerTests: XCTestCase {
     
 }
 
-extension FeedViewControllerTests {
+extension FeedUIIntegrationTests {
     func makeSUT(file: StaticString = #file, line: UInt = #line) -> (LoadSpy, FeedViewController) {
         let loader = LoadSpy()
         let sut = FeedUIComposer.feedComposedWith(feedLoader: loader, imageLoader: loader)
@@ -437,12 +483,15 @@ private extension FeedViewController {
         return feedImageView(at: index) as? FeedImageCell
     }
     
-    func simulateFeedImageNOTVisible(at index: Int = 0) {
+    @discardableResult
+    func simulateFeedImageNOTVisible(at index: Int = 0) -> FeedImageCell? {
         let view = simulateFeedImageVisible(at: index)
         
         let delegate = tableView.delegate
         let indexPath = IndexPath(row: index, section: feedImageSections)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: indexPath)
+        
+        return view
     }
 }
 
