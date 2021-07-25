@@ -19,12 +19,12 @@ final class FeedLoaderWithFallbackComposite: FeedLoader {
     }
     
     func load(_ completion: @escaping (FeedLoadResult) -> Void) {
-        primary.load { result in
+        primary.load { [weak self] result in
             switch result {
             case .success:
                 completion(result)
             case .failure:
-                self.fallBack.load(completion)
+                self?.fallBack.load(completion)
             }
         }
     }
@@ -37,34 +37,14 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         let fallbackFeed = uniqueItems()
         let sut = makeSUT(primaryResult: .success(primaryFeed), fallbackResult: .success(fallbackFeed))
         
-        let exp = expectation(description: "wait for loading")
-        sut.load { result in
-            switch result {
-            case .success(let receivedFeed):
-                XCTAssertEqual(receivedFeed, primaryFeed)
-            case .failure(let error):
-                XCTFail("expected to get successull load result, but got \(error) instead")
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        expect(sut, toCompleteWith: .success(primaryFeed))
     }
     
     func test_deliversFallback_onPrimaryFailure() {
         let fallbackFeed = uniqueItems()
         let sut = makeSUT(primaryResult: .failure(anyError()), fallbackResult: .success(fallbackFeed))
         
-        let exp = expectation(description: "wait for loading")
-        sut.load { result in
-            switch result {
-            case .success(let receivedFeed):
-                XCTAssertEqual(receivedFeed, fallbackFeed)
-            case .failure(let error):
-                XCTFail("expected to get successull load result, but got \(error) instead")
-            }
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        expect(sut, toCompleteWith: .success(fallbackFeed))
     }
     
     // Mark: - Extensions
@@ -86,6 +66,30 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         addTeardownBlock { [weak instance] in
             XCTAssertNil(instance, "Instance is supposed to be deallocated but is retained instead", file: file, line: line)
         }
+    }
+    
+    private func expect(_ sut: FeedLoader,
+                        toCompleteWith expectedResult: FeedLoadResult,
+                        file: StaticString = #file,
+                        line: UInt = #line) {
+        let exp = expectation(description: "Wait for load completion")
+        
+        sut.load { receivedResult in
+            switch (receivedResult, expectedResult) {
+            case let (.success(receivedFeed), .success(expectedFeed)):
+                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
+                
+            case (.failure, .failure):
+                break
+                
+            default:
+                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
+            }
+            
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1.0)
     }
     
     private func uniqueItems() -> [FeedImage] {
