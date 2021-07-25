@@ -19,6 +19,8 @@
 		C09C7EE826A7BBC100A73866 /* iOSFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C09C7EE426A7BBC100A73866 /* iOSFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C09C7F0E26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F0D26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift */; };
 		C09C7F1126AE198300A73866 /* FeedLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */; };
+		C09C7F1326AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */; };
+		C09C7F1526AE1B2700A73866 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1426AE1B2700A73866 /* Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +64,8 @@
 		C09C7F0C26ADFC6100A73866 /* FeedAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FeedAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C09C7F0D26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
 		C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
+		C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
+		C09C7F1426AE1B2700A73866 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,11 +134,21 @@
 		C09C7F0326ADFC1000A73866 /* FeedAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				C09C7F1626AE1B6700A73866 /* Helpers */,
 				C09C7F0626ADFC1000A73866 /* Info.plist */,
 				C09C7F0D26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift */,
+				C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */,
 				C09C7F0C26ADFC6100A73866 /* FeedAppTests-Bridging-Header.h */,
 			);
 			path = FeedAppTests;
+			sourceTree = "<group>";
+		};
+		C09C7F1626AE1B6700A73866 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C09C7F1426AE1B2700A73866 /* Helpers.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +264,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09C7F1326AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift in Sources */,
+				C09C7F1526AE1B2700A73866 /* Helpers.swift in Sources */,
 				C09C7F0E26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

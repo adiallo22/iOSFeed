@@ -47,12 +47,6 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         return sut
     }
     
-    func trackForMemoryLeaks(_ instance: AnyObject, file: StaticString = #file, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Instance is supposed to be deallocated but is retained instead", file: file, line: line)
-        }
-    }
-    
     private func expect(_ sut: FeedLoader,
                         toCompleteWith expectedResult: FeedLoadResult,
                         file: StaticString = #file,
@@ -75,14 +69,6 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 1.0)
-    }
-    
-    private func uniqueItems() -> [FeedImage] {
-        [FeedImage(id: UUID(), description: "any", location: "any", image: URL(string: "any-url.com")!)]
-    }
-    
-    private func anyError() -> Error {
-        NSError(domain: "any error", code: 0, userInfo: nil)
     }
     
     private class FeedLoaderSpy: FeedLoader {
