@@ -21,6 +21,7 @@
 		C09C7F1126AE198300A73866 /* FeedLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */; };
 		C09C7F1326AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */; };
 		C09C7F1526AE1B2700A73866 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1426AE1B2700A73866 /* Helpers.swift */; };
+		C09C7F1826AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 		C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
 		C09C7F1426AE1B2700A73866 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				C09C7ED026A7BA1800A73866 /* SceneDelegate.swift */,
 				C09C7ED226A7BA1800A73866 /* ViewController.swift */,
 				C09C7ED426A7BA1800A73866 /* Main.storyboard */,
+				C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */,
 				C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */,
 				C09C7ED726A7BA1E00A73866 /* Assets.xcassets */,
 				C09C7ED926A7BA1E00A73866 /* LaunchScreen.storyboard */,
@@ -254,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09C7ED326A7BA1800A73866 /* ViewController.swift in Sources */,
+				C09C7F1826AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ECF26A7BA1800A73866 /* AppDelegate.swift in Sources */,
 				C09C7F1126AE198300A73866 /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ED126A7BA1800A73866 /* SceneDelegate.swift in Sources */,
