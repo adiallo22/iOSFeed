@@ -9,6 +9,7 @@ import XCTest
 import iOSFeed
 
 final class FeedDataLoaderWithFallbackComposite: FeedImageDataLoader {
+    private let primaryDataLoader: FeedImageDataLoader
     
     private class Task: FeedImageDataLoaderTask {
         func cancel() {
@@ -16,10 +17,12 @@ final class FeedDataLoaderWithFallbackComposite: FeedImageDataLoader {
     }
     
     init(primary: FeedImageDataLoader, fallback: FeedImageDataLoader) {
+        self.primaryDataLoader = primary
     }
     
     func loadImage(from url: URL, _ completion: @escaping FeedImageDataLoaderResult) -> FeedImageDataLoaderTask {
-        Task()
+        _ = primaryDataLoader.loadImage(from: url) { _ in }
+        return Task()
     }
     
 }
@@ -35,6 +38,17 @@ class FeedDataLoaderWithFallbackCompositeTests: XCTestCase {
         XCTAssertTrue(primaryLoader.loadedURLs.isEmpty, "Expected no loaded URLs in the fallback loader")
     }
     
+    func test_loadImageData_loadsFromPrimaryLoaderFirst() {
+        let url = anyURL()
+        let primaryLoader = FeedImageDataLoaderSpy()
+        let fallbackLoader = FeedImageDataLoaderSpy()
+        let sut = FeedDataLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
+        
+        _ = sut.loadImage(from: url) { _ in }
+        
+        XCTAssertEqual(primaryLoader.loadedURLs, [url], "Expected to load URL from primary loader")
+        XCTAssertTrue(fallbackLoader.loadedURLs.isEmpty, "Expected no loaded URLs in the fallback loader")
+    }
     // Mark: - Extensions
     
     private class FeedImageDataLoaderSpy: FeedImageDataLoader {
