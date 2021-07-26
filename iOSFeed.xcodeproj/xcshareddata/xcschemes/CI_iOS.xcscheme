@@ -104,6 +104,17 @@
                ReferencedContainer = "container:iOSFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C09C7F0126ADFC1000A73866"
+               BuildableName = "FeedAppTests.xctest"
+               BlueprintName = "FeedAppTests"
+               ReferencedContainer = "container:FeedApp/FeedApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
