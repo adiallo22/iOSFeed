@@ -25,15 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
         let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: url)
         
-        let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("feed-store-sqlite")
-        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
-        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
-        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+//        let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("FeedStore")
+//        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
+//        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
+//        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
         
         let feedViewController = FeedUIComposer.feedComposedWith(
             feedLoader: FeedLoaderWithFallbackComposite(primary: remoteFeedLoader,
-                                                        fallBack: localFeedLoader),
-            imageLoader: FeedDataLoaderWithFallbackComposite(primary: localImageLoader,
+                                                        fallBack: remoteFeedLoader),
+            imageLoader: FeedDataLoaderWithFallbackComposite(primary: remoteImageLoader,
                                                              fallback: remoteImageLoader)
         )
         

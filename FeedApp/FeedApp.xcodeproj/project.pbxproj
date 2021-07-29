@@ -22,6 +22,7 @@
 		C09C7F1326AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */; };
 		C09C7F1526AE1B2700A73866 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1426AE1B2700A73866 /* Helpers.swift */; };
 		C09C7F1826AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */; };
+		C09C7F1A26B244A500A73866 /* FeedLoaderCacheDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7F1926B244A400A73866 /* FeedLoaderCacheDecoratorTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
 		C09C7F1426AE1B2700A73866 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
+		C09C7F1926B244A400A73866 /* FeedLoaderCacheDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecoratorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				C09C7F0626ADFC1000A73866 /* Info.plist */,
 				C09C7F0D26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift */,
 				C09C7F1226AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift */,
+				C09C7F1926B244A400A73866 /* FeedLoaderCacheDecoratorTests.swift */,
 				C09C7F0C26ADFC6100A73866 /* FeedAppTests-Bridging-Header.h */,
 			);
 			path = FeedAppTests;
@@ -271,6 +274,7 @@
 				C09C7F1326AE1ACD00A73866 /* FeedDataLoaderWithFallbackCompositeTests.swift in Sources */,
 				C09C7F1526AE1B2700A73866 /* Helpers.swift in Sources */,
 				C09C7F0E26ADFC6100A73866 /* FeedLoaderWithFallbackCompositeTests.swift in Sources */,
+				C09C7F1A26B244A500A73866 /* FeedLoaderCacheDecoratorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
