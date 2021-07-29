@@ -8,6 +8,7 @@
 import UIKit
 import EssentialFeediOS
 import iOSFeed
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -19,13 +20,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5d1c78f21e661a0001ce7cfd/1562147059075/feed-case-study-v1-api-feed.json")!
         let session = URLSession(configuration: .ephemeral)
-        let client = URLSessionHTTPClient(session: session)
         
-        let imageLoader = RemoteFeedImageDataLoader(client: client)
-        let feedLoader = RemoteFeedLoader(client: client, url: url)
+        let remoteClient = URLSessionHTTPClient(session: session)
+        let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
+        let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: url)
         
-        let feedViewController = FeedUIComposer.feedComposedWith(feedLoader: feedLoader,
-                                                                 imageLoader: imageLoader)
+        let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("feed-store-sqlite")
+        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
+        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
+        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+        
+        let feedViewController = FeedUIComposer.feedComposedWith(
+            feedLoader: FeedLoaderWithFallbackComposite(primary: remoteFeedLoader,
+                                                        fallBack: localFeedLoader),
+            imageLoader: FeedDataLoaderWithFallbackComposite(primary: localImageLoader,
+                                                             fallback: remoteImageLoader)
+        )
         
         window?.rootViewController = feedViewController
     }

@@ -58,6 +58,13 @@
             BlueprintName = "EssentialFeediOS"
             ReferencedContainer = "container:iOSFeed.xcodeproj">
          </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C09C7ECA26A7BA1800A73866"
+            BuildableName = "FeedApp.app"
+            BlueprintName = "FeedApp"
+            ReferencedContainer = "container:FeedApp/FeedApp.xcodeproj">
+         </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
          <TestableReference
