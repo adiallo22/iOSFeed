@@ -20,60 +20,21 @@ final class FeedLoaderCacheDecorator: FeedLoader {
     }
 }
 
-class FeedLoaderCacheDecoratorTests: XCTestCase {
+class FeedLoaderCacheDecoratorTests: XCTestCase, FeedLoaderTestCase {
     
     func test_load_deliversFeedOnLoaderSuccess() {
         let feed = uniqueItems()
-        let loader = FeedLoaderSpy(result: .success(feed))
+        let loader = FeedLoaderStub(result: .success(feed))
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
 
         expect(sut, toCompleteWith: .success(feed))
     }
     
     func test_load_deliversErrorOnLoaderFailure() {
-        let feed = uniqueItems()
-        let loader = FeedLoaderSpy(result: .failure(anyError()))
+        let loader = FeedLoaderStub(result: .failure(anyError()))
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
 
         expect(sut, toCompleteWith: .failure(anyError()))
-    }
-    
-    // MARK: - Helpers
-    
-    private func expect(_ sut: FeedLoader,
-                        toCompleteWith expectedResult: FeedLoadResult,
-                        file: StaticString = #file,
-                        line: UInt = #line) {
-        let exp = expectation(description: "Wait for load completion")
-        
-        sut.load { receivedResult in
-            switch (receivedResult, expectedResult) {
-            case let (.success(receivedFeed), .success(expectedFeed)):
-                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-                
-            case (.failure, .failure):
-                break
-                
-            default:
-                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
-            }
-            
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1.0)
-    }
-    
-    private class FeedLoaderSpy: FeedLoader {
-        var result: FeedLoadResult
-        
-        init(result: FeedLoadResult) {
-            self.result = result
-        }
-        
-        func load(_ completion: @escaping (FeedLoadResult) -> Void) {
-            completion(result)
-        }
     }
     
 }
