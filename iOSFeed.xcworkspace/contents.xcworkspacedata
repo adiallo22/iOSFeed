@@ -5,6 +5,6 @@
       location = "container:FeedApp/FeedApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../iOSFeed.xcodeproj">
+      location = "group:iOSFeed.xcodeproj">
    </FileRef>
 </Workspace>
