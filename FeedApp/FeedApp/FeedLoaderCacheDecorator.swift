@@ -19,10 +19,16 @@ public final class FeedLoaderCacheDecorator: FeedLoader {
     public func load(_ completion: @escaping (FeedLoadResult) -> Void) {
         decoratee.load { [weak self] result in
             switch result {
-            case .success(let feed): self?.cache.saveOnCache(feed, completion: { _ in })
+            case .success(let feed): self?.cache.saveIgnoringCompletion(feed)
             case .failure: break
             }
             completion(result)
         }
+    }
+}
+
+private extension FeedCache {
+    func saveIgnoringCompletion(_ feed: [FeedImage]) {
+        saveOnCache(feed) { _ in }
     }
 }
