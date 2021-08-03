@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C057B47B26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */; };
 		C09C7ECF26A7BA1800A73866 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7ECE26A7BA1800A73866 /* AppDelegate.swift */; };
 		C09C7ED126A7BA1800A73866 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7ED026A7BA1800A73866 /* SceneDelegate.swift */; };
 		C09C7ED326A7BA1800A73866 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09C7ED226A7BA1800A73866 /* ViewController.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecorator.swift; sourceTree = "<group>"; };
 		C09C7ECB26A7BA1800A73866 /* FeedApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C09C7ECE26A7BA1800A73866 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C09C7ED026A7BA1800A73866 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				C09C7ECE26A7BA1800A73866 /* AppDelegate.swift */,
 				C09C7ED026A7BA1800A73866 /* SceneDelegate.swift */,
 				C09C7ED226A7BA1800A73866 /* ViewController.swift */,
+				C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */,
 				C09C7ED426A7BA1800A73866 /* Main.storyboard */,
 				C09C7F1726AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift */,
 				C09C7F1026AE198300A73866 /* FeedLoaderWithFallbackComposite.swift */,
@@ -268,6 +271,7 @@
 				C09C7ED326A7BA1800A73866 /* ViewController.swift in Sources */,
 				C09C7F1826AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ECF26A7BA1800A73866 /* AppDelegate.swift in Sources */,
+				C057B47B26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift in Sources */,
 				C09C7F1126AE198300A73866 /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ED126A7BA1800A73866 /* SceneDelegate.swift in Sources */,
 			);
