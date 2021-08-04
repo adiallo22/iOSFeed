@@ -7,31 +7,7 @@
 
 import XCTest
 import iOSFeed
-
-protocol FeedImageDataCache {
-    typealias Result = Swift.Result<Void, Error>
-    
-    func save(_ data: Data, for url: URL, completion: @escaping (Result) -> Void)
-}
-
-final class FeedImageLoaderCacheDecorator: FeedImageDataLoader {
-    private let decoratee: FeedImageDataLoader
-    private let cache: FeedImageDataCache
-    
-    init(decoratee: FeedImageDataLoader, cache: FeedImageDataCache) {
-        self.decoratee = decoratee
-        self.cache = cache
-    }
-    
-    func loadImage(from url: URL, _ completion: @escaping FeedImageDataLoaderResult) -> FeedImageDataLoaderTask {
-        decoratee.loadImage(from: url) { [weak self] result in
-            completion(result.map({ data in
-                self?.cache.save(data, for: url, completion: { _ in })
-                return data
-            }))
-        }
-    }
-}
+import FeedApp
 
 class FeedImageLoaderCacheDecoratorTests: XCTestCase, FeedDataLoaderTestCase {
     
