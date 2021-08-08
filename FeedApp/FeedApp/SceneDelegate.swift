@@ -19,61 +19,59 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let _ = (scene as? UIWindowScene) else { return }
         
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5d1c78f21e661a0001ce7cfd/1562147059075/feed-case-study-v1-api-feed.json")!
-        let session = URLSession(configuration: .ephemeral)
         
-        let remoteClient = URLSessionHTTPClient(session: session)
+        let remoteClient = makeRemoteClient()
         let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
         let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: url)
         
-        let localStoreURL = NSPersistentContainer.defaultDirectoryURL().appendingPathComponent("FeedStore")
-        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
-        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
-        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+        let localStoreURL = NSPersistentContainer
+                                .defaultDirectoryURL()
+                                .appendingPathComponent("FeedStore")
         
-        let feedViewController = FeedUIComposer.feedComposedWith(
-            feedLoader: FeedLoaderWithFallbackComposite(
-                primary: FeedLoaderCacheDecorator(
-                    decoratee: remoteFeedLoader,
-                    cache: localFeedLoader),
-                fallBack: remoteFeedLoader),
-            imageLoader: FeedDataLoaderWithFallbackComposite(
-                primary: FeedImageLoaderCacheDecorator(
-                    decoratee: remoteImageLoader,
-                    cache: localImageLoader),
-                fallback: remoteImageLoader)
-        )
+        if CommandLine.arguments.contains("-reset") {
+            try? FileManager.default.removeItem(at: localStoreURL)
+        }
         
-        window?.rootViewController = feedViewController
+//        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
+//        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
+//        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+//
+//        let _ = FeedUIComposer.feedComposedWith(
+//            feedLoader: FeedLoaderWithFallbackComposite(
+//                primary: FeedLoaderCacheDecorator(
+//                    decoratee: remoteFeedLoader,
+//                    cache: localFeedLoader),
+//                fallBack: remoteFeedLoader),
+//            imageLoader: FeedDataLoaderWithFallbackComposite(
+//                primary: FeedImageLoaderCacheDecorator(
+//                    decoratee: remoteImageLoader,
+//                    cache: localImageLoader),
+//                fallback: remoteImageLoader)
+//        )
+        
+        let backupfeedVC = FeedUIComposer.feedComposedWith(feedLoader: remoteFeedLoader, imageLoader: remoteImageLoader)
+        
+        window?.rootViewController = backupfeedVC
+    }
+    
+    private func makeRemoteClient() -> HTTPClient {
+        switch UserDefaults.standard.string(forKey: "connectivity") {
+        case "offline": return AlwaysFailingHTTPClient()
+            
+        default: return URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        }
     }
 
-    func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+}
+
+private final class AlwaysFailingHTTPClient: HTTPClient {
+    private class Task: HTTPClientTask {
+        func cancel() { }
     }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    
+    func get(from url: URL, completion: @escaping (HTTPResponse) -> Void) -> HTTPClientTask {
+        completion(.failure(NSError(domain: "any error", code: 0)))
+        return Task()
     }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
-    }
-
-
 }
 
