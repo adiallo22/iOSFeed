@@ -9,13 +9,11 @@
 import UIKit
 
 extension UITableView {
-    func dequeueReusableCell<T: UITableViewCell>() -> T {
-        let identifier = String(describing: T.self)
-        return dequeueReusableCell(withIdentifier: identifier) as! T
+    func dequeueReusableCell<T: UITableViewCell>(identifier: String? = nil) -> T {
+        dequeueReusableCell(withIdentifier: identifier ?? String(describing: T.self)) as! T
     }
     
-    func registerReusableCell<T: UITableViewCell>(cell: T.Type) {
-        let identifer = String(describing: T.self)
-        register(cell, forCellReuseIdentifier: identifer)
+    func registerReusableCell<T: UITableViewCell>(cell: T.Type, identifier: String? = nil) {
+        register(cell, forCellReuseIdentifier: identifier ?? String(describing: T.self))
     }
 }

@@ -52,6 +52,7 @@ public class FeedImageCell: UITableViewCell {
         view.backgroundColor = .lightGray
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
+        view.accessibilityIdentifier = "feed-image-view"
         view.snp.makeConstraints {
             $0.height.equalTo(400).priority(.high)
         }
@@ -77,6 +78,7 @@ public class FeedImageCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         layout()
+        accessibilityIdentifier = "feed-image-cell"
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
