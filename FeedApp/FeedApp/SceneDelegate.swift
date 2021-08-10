@@ -31,26 +31,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             try? FileManager.default.removeItem(at: localStoreURL)
         }
         
-//        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL)
-//        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
-//        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
-//
-//        let _ = FeedUIComposer.feedComposedWith(
-//            feedLoader: FeedLoaderWithFallbackComposite(
-//                primary: FeedLoaderCacheDecorator(
-//                    decoratee: remoteFeedLoader,
-//                    cache: localFeedLoader),
-//                fallBack: remoteFeedLoader),
-//            imageLoader: FeedDataLoaderWithFallbackComposite(
-//                primary: FeedImageLoaderCacheDecorator(
-//                    decoratee: remoteImageLoader,
-//                    cache: localImageLoader),
-//                fallback: remoteImageLoader)
-//        )
+        let bundle = Bundle(for: CoreDataFeedStore.self)
+        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL, bundle: bundle)
         
-        let backupfeedVC = FeedUIComposer.feedComposedWith(feedLoader: remoteFeedLoader, imageLoader: remoteImageLoader)
+        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
+        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+
+        let feedViewController = FeedUIComposer.feedComposedWith(
+            feedLoader: FeedLoaderWithFallbackComposite(
+                primary: FeedLoaderCacheDecorator(
+                    decoratee: remoteFeedLoader,
+                    cache: localFeedLoader),
+                fallBack: remoteFeedLoader),
+            imageLoader: FeedDataLoaderWithFallbackComposite(
+                primary: FeedImageLoaderCacheDecorator(
+                    decoratee: remoteImageLoader,
+                    cache: localImageLoader),
+                fallback: remoteImageLoader)
+        )
         
-        window?.rootViewController = backupfeedVC
+        window?.rootViewController = feedViewController
     }
     
     func makeRemoteClient() -> HTTPClient {
