@@ -18,6 +18,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             .defaultDirectoryURL()
                             .appendingPathComponent("FeedStore")
     
+    private lazy var httpClient: HTTPClient = {
+        URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+    }()
+    
+    private lazy var store: FeedStore & FeedImageDataStore = {
+        let bundle = Bundle(for: CoreDataFeedStore.self)
+        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL, bundle: bundle)
+        return localStore
+    }()
+    
+    convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
+        self.init()
+        self.httpClient = httpClient
+        self.store = store
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         
@@ -35,11 +51,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             try? FileManager.default.removeItem(at: localStoreURL)
         }
         
-        let bundle = Bundle(for: CoreDataFeedStore.self)
-        let localStore = try! CoreDataFeedStore(storeURL: localStoreURL, bundle: bundle)
-        
-        let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
-        let localImageLoader = LocalFeedImageDataLoader(store: localStore)
+        let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
+        let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         let feedViewController = FeedUIComposer.feedComposedWith(
             feedLoader: FeedLoaderWithFallbackComposite(
@@ -57,8 +70,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = UINavigationController(rootViewController: feedViewController)
     }
     
-    func makeRemoteClient() -> HTTPClient {
-        return URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-    }
+    func makeRemoteClient() -> HTTPClient { httpClient }
 
 }
