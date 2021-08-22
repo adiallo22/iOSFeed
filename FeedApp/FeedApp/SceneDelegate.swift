@@ -21,12 +21,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         
+        configureWindow()
+    }
+    
+    func configureWindow() {
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5d1c78f21e661a0001ce7cfd/1562147059075/feed-case-study-v1-api-feed.json")!
         
         let remoteClient = makeRemoteClient()
         let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
         let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: url)
-                
+        
         if CommandLine.arguments.contains("-reset") {
             try? FileManager.default.removeItem(at: localStoreURL)
         }
@@ -36,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let localFeedLoader = LocalFeedLoader(store: localStore, currentDate: Date.init)
         let localImageLoader = LocalFeedImageDataLoader(store: localStore)
-
+        
         let feedViewController = FeedUIComposer.feedComposedWith(
             feedLoader: FeedLoaderWithFallbackComposite(
                 primary: FeedLoaderCacheDecorator(
@@ -50,7 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 fallback: remoteImageLoader)
         )
         
-        window?.rootViewController = feedViewController
+        window?.rootViewController = UINavigationController(rootViewController: feedViewController)
     }
     
     func makeRemoteClient() -> HTTPClient {
