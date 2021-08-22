@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C03C3A3A26C03CD300B7C1F9 /* FeedAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C3A3926C03CD300B7C1F9 /* FeedAppUITests.swift */; };
-		C03C3A4226C084BE00B7C1F9 /* DebuggingSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C3A4126C084BE00B7C1F9 /* DebuggingSceneDelegate.swift */; };
 		C03C3A4426D2C2C800B7C1F9 /* SceneDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C3A4326D2C2C800B7C1F9 /* SceneDelegateTests.swift */; };
 		C057B47B26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */; };
 		C057B47D26B8D476002CE972 /* FeedImageLoaderCacheDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057B47C26B8D476002CE972 /* FeedImageLoaderCacheDecoratorTests.swift */; };
@@ -36,13 +34,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C03C3A3C26C03CD300B7C1F9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C09C7EC326A7BA1800A73866 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C09C7ECA26A7BA1800A73866;
-			remoteInfo = FeedApp;
-		};
 		C09C7F0726ADFC1000A73866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C09C7EC326A7BA1800A73866 /* Project object */;
@@ -68,10 +59,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C03C3A3726C03CD200B7C1F9 /* FeedAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeedAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C03C3A3926C03CD300B7C1F9 /* FeedAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedAppUITests.swift; sourceTree = "<group>"; };
-		C03C3A3B26C03CD300B7C1F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C03C3A4126C084BE00B7C1F9 /* DebuggingSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebuggingSceneDelegate.swift; sourceTree = "<group>"; };
 		C03C3A4326D2C2C800B7C1F9 /* SceneDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTests.swift; sourceTree = "<group>"; };
 		C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecorator.swift; sourceTree = "<group>"; };
 		C057B47C26B8D476002CE972 /* FeedImageLoaderCacheDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageLoaderCacheDecoratorTests.swift; sourceTree = "<group>"; };
@@ -102,13 +89,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C03C3A3426C03CD200B7C1F9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C09C7EC826A7BA1800A73866 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,21 +108,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C03C3A3826C03CD300B7C1F9 /* FeedAppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				C03C3A3926C03CD300B7C1F9 /* FeedAppUITests.swift */,
-				C03C3A3B26C03CD300B7C1F9 /* Info.plist */,
-			);
-			path = FeedAppUITests;
-			sourceTree = "<group>";
-		};
 		C09C7EC226A7BA1800A73866 = {
 			isa = PBXGroup;
 			children = (
 				C09C7ECD26A7BA1800A73866 /* FeedApp */,
 				C09C7F0326ADFC1000A73866 /* FeedAppTests */,
-				C03C3A3826C03CD300B7C1F9 /* FeedAppUITests */,
 				C09C7ECC26A7BA1800A73866 /* Products */,
 				C09C7EE226A7BBC100A73866 /* Frameworks */,
 			);
@@ -153,7 +123,6 @@
 			children = (
 				C09C7ECB26A7BA1800A73866 /* FeedApp.app */,
 				C09C7F0226ADFC1000A73866 /* FeedAppTests.xctest */,
-				C03C3A3726C03CD200B7C1F9 /* FeedAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -163,7 +132,6 @@
 			children = (
 				C09C7ECE26A7BA1800A73866 /* AppDelegate.swift */,
 				C09C7ED026A7BA1800A73866 /* SceneDelegate.swift */,
-				C03C3A4126C084BE00B7C1F9 /* DebuggingSceneDelegate.swift */,
 				C09C7ED226A7BA1800A73866 /* ViewController.swift */,
 				C057B47A26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift */,
 				C057B48426BA3111002CE972 /* FeedImageLoaderCacheDecorator.swift */,
@@ -216,24 +184,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C03C3A3626C03CD200B7C1F9 /* FeedAppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C03C3A4026C03CD300B7C1F9 /* Build configuration list for PBXNativeTarget "FeedAppUITests" */;
-			buildPhases = (
-				C03C3A3326C03CD200B7C1F9 /* Sources */,
-				C03C3A3426C03CD200B7C1F9 /* Frameworks */,
-				C03C3A3526C03CD200B7C1F9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C03C3A3D26C03CD300B7C1F9 /* PBXTargetDependency */,
-			);
-			name = FeedAppUITests;
-			productName = FeedAppUITests;
-			productReference = C03C3A3726C03CD200B7C1F9 /* FeedAppUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		C09C7ECA26A7BA1800A73866 /* FeedApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C09C7EDF26A7BA1E00A73866 /* Build configuration list for PBXNativeTarget "FeedApp" */;
@@ -279,10 +229,6 @@
 				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					C03C3A3626C03CD200B7C1F9 = {
-						CreatedOnToolsVersion = 12.5.1;
-						TestTargetID = C09C7ECA26A7BA1800A73866;
-					};
 					C09C7ECA26A7BA1800A73866 = {
 						CreatedOnToolsVersion = 12.5.1;
 					};
@@ -308,19 +254,11 @@
 			targets = (
 				C09C7ECA26A7BA1800A73866 /* FeedApp */,
 				C09C7F0126ADFC1000A73866 /* FeedAppTests */,
-				C03C3A3626C03CD200B7C1F9 /* FeedAppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C03C3A3526C03CD200B7C1F9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C09C7EC926A7BA1800A73866 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -341,14 +279,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C03C3A3326C03CD200B7C1F9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C03C3A3A26C03CD300B7C1F9 /* FeedAppUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C09C7EC726A7BA1800A73866 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -357,7 +287,6 @@
 				C09C7F1826AE5EB400A73866 /* FeedDataLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ECF26A7BA1800A73866 /* AppDelegate.swift in Sources */,
 				C057B47B26B8D0C5002CE972 /* FeedLoaderCacheDecorator.swift in Sources */,
-				C03C3A4226C084BE00B7C1F9 /* DebuggingSceneDelegate.swift in Sources */,
 				C09C7F1126AE198300A73866 /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				C09C7ED126A7BA1800A73866 /* SceneDelegate.swift in Sources */,
 				C057B48526BA3111002CE972 /* FeedImageLoaderCacheDecorator.swift in Sources */,
@@ -384,11 +313,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C03C3A3D26C03CD300B7C1F9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C09C7ECA26A7BA1800A73866 /* FeedApp */;
-			targetProxy = C03C3A3C26C03CD300B7C1F9 /* PBXContainerItemProxy */;
-		};
 		C09C7F0826ADFC1000A73866 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C09C7ECA26A7BA1800A73866 /* FeedApp */;
@@ -416,44 +340,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C03C3A3E26C03CD300B7C1F9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZNY957A2G6;
-				INFOPLIST_FILE = FeedAppUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulCo.FeedAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = FeedApp;
-			};
-			name = Debug;
-		};
-		C03C3A3F26C03CD300B7C1F9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ZNY957A2G6;
-				INFOPLIST_FILE = FeedAppUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulCo.FeedAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = FeedApp;
-			};
-			name = Release;
-		};
 		C09C7EDD26A7BA1E00A73866 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -656,15 +542,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C03C3A4026C03CD300B7C1F9 /* Build configuration list for PBXNativeTarget "FeedAppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C03C3A3E26C03CD300B7C1F9 /* Debug */,
-				C03C3A3F26C03CD300B7C1F9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C09C7EC626A7BA1800A73866 /* Build configuration list for PBXProject "FeedApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

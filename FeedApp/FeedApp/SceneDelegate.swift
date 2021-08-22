@@ -14,16 +14,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    let localStoreURL = NSPersistentContainer
-                            .defaultDirectoryURL()
-                            .appendingPathComponent("FeedStore")
-    
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     }()
     
     private lazy var store: FeedStore & FeedImageDataStore = {
         let bundle = Bundle(for: CoreDataFeedStore.self)
+        let localStoreURL = NSPersistentContainer
+                                .defaultDirectoryURL()
+                                .appendingPathComponent("FeedStore")
         let localStore = try! CoreDataFeedStore(storeURL: localStoreURL, bundle: bundle)
         return localStore
     }()
@@ -43,13 +42,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func configureWindow() {
         let url = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5d1c78f21e661a0001ce7cfd/1562147059075/feed-case-study-v1-api-feed.json")!
         
-        let remoteClient = makeRemoteClient()
-        let remoteImageLoader = RemoteFeedImageDataLoader(client: remoteClient)
-        let remoteFeedLoader = RemoteFeedLoader(client: remoteClient, url: url)
-        
-        if CommandLine.arguments.contains("-reset") {
-            try? FileManager.default.removeItem(at: localStoreURL)
-        }
+        let remoteImageLoader = RemoteFeedImageDataLoader(client: httpClient)
+        let remoteFeedLoader = RemoteFeedLoader(client: httpClient, url: url)
         
         let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
         let localImageLoader = LocalFeedImageDataLoader(store: store)
