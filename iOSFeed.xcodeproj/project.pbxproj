@@ -82,6 +82,7 @@
 		C0F226752602F5A500882EB2 /* LocalFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F226742602F5A500882EB2 /* LocalFeedItem.swift */; };
 		C0F2268F2610FE0800882EB2 /* LoadFeedFromCacheUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2268E2610FE0700882EB2 /* LoadFeedFromCacheUseCaseTests.swift */; };
 		C0F22694261100D000882EB2 /* FeedStoreSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F22693261100D000882EB2 /* FeedStoreSpy.swift */; };
+		C0FFB0E826D4869E00630D0A /* FeedSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFB0E726D4869D00630D0A /* FeedSnapshotTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +209,7 @@
 		C0F226742602F5A500882EB2 /* LocalFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedItem.swift; sourceTree = "<group>"; };
 		C0F2268E2610FE0700882EB2 /* LoadFeedFromCacheUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedFromCacheUseCaseTests.swift; sourceTree = "<group>"; };
 		C0F22693261100D000882EB2 /* FeedStoreSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreSpy.swift; sourceTree = "<group>"; };
+		C0FFB0E726D4869D00630D0A /* FeedSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSnapshotTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -304,6 +306,7 @@
 			children = (
 				C0202932265DD2A700CBB558 /* Info.plist */,
 				C0ECF72B26654C0E0031B013 /* FeedUIIntegrationTests.swift */,
+				C0FFB0E726D4869D00630D0A /* FeedSnapshotTests.swift */,
 				C0BB3B3A2681700A0090AF59 /* Helpers */,
 				C0ECF72A26654C0D0031B013 /* EssentialFeediOSTests-Bridging-Header.h */,
 			);
@@ -825,6 +828,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0BB3B2A26816F350090AF59 /* FeedUIIntegrationTests+Helper.swift in Sources */,
+				C0FFB0E826D4869E00630D0A /* FeedSnapshotTests.swift in Sources */,
 				C0ECF73E266551840031B013 /* XCTestCase+MemoryLeak.swift in Sources */,
 				C0964F2F266D35BE00CB600A /* GlobalTestHelpers.swift in Sources */,
 				C0BB3B4A268172C30090AF59 /* FeedLocalizationTests.swift in Sources */,
