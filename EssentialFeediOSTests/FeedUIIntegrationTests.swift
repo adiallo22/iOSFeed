@@ -97,6 +97,20 @@ class FeedUIIntegrationTests: XCTestCase {
         assertThat(sut, isRendering: [image0, image1, image2, image3])
     }
     
+    func test_loadFeedCompletion_rendersSuccessfullyLoadedEmptyFeedAfterNonEmptyFeed() {
+        let image0 = makeImage()
+        let image1 = makeImage()
+        let (loader, sut) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeLoading(with: [image0, image1], at: 0)
+        assertThat(sut, isRendering: [image0, image1])
+        
+        sut.simulateUserInitiatedFeedRefresh()
+        loader.completeLoading(with: [], at: 1)
+        assertThat(sut, isRendering: [])
+    }
+    
     func test_loadFeedCompletion_doesNotAlterCurrentStateRenderingAfterError() {
         let (loader, sut) = makeSUT()
         let image0 = makeImage(description: "a description", location: "a location")
@@ -400,9 +414,12 @@ extension FeedUIIntegrationTests {
     func assertThat(_ sut: FeedViewController,
                     isRendering feed: [FeedImage],
                     file: StaticString = #file, line: UInt = #line) {
+        sut.view.enforceLayoutCycle()
+        
         guard sut.numberOfRenderedImageFeeds() == feed.count else {
             return XCTFail("Expected \(feed.count) images, but got \(sut.numberOfRenderedImageFeeds())", file: file, line: line)
         }
+        
         feed.enumerated().forEach { (index, image) in
             assertThat(sut, hasviewConfiguredFor: image, at: index, file: file, line: line)
         }
@@ -505,19 +522,6 @@ private extension UIRefreshControl {
         })
     }
 }
-
-private extension UIImage {
-     static func make(withColor color: UIColor) -> UIImage {
-         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
-         UIGraphicsBeginImageContext(rect.size)
-         let context = UIGraphicsGetCurrentContext()!
-         context.setFillColor(color.cgColor)
-         context.fill(rect)
-         let img = UIGraphicsGetImageFromCurrentImageContext()
-         UIGraphicsEndImageContext()
-         return img!
-     }
- }
 
 private extension UIButton {
      func simulateTap() {
