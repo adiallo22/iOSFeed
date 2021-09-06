@@ -7,6 +7,7 @@
 //
 
 import iOSFeed
+import CacheFeed
 
 class FeedStoreSpy: FeedStore {
     

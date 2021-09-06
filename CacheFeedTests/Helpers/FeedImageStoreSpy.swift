@@ -8,6 +8,7 @@
 
 import Foundation
 import iOSFeed
+import CacheFeed
 
 class FeedImageStoreSpy: FeedImageDataStore {
     

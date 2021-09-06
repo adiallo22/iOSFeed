@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import iOSFeed
 
 final public class LocalFeedLoader {
     

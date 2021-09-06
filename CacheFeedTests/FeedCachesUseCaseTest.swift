@@ -8,6 +8,7 @@
 
 import XCTest
 import iOSFeed
+import CacheFeed
 
 class FeedCachesUseCaseTest: XCTestCase {
     

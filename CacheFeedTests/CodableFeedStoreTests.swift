@@ -8,6 +8,7 @@
 
 import XCTest
 import iOSFeed
+import CacheFeed
 
 class CodableFeedStoreTests: XCTestCase, FailableSpecs {
     
@@ -56,14 +57,14 @@ class CodableFeedStoreTests: XCTestCase, FailableSpecs {
     func test_retrieve_deliversErrorOnInvalidData() {
         let storeURL = testSpecificStoreURL()
         let sut = makeSUT(storeURL: storeURL)
-        try! "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
+        try? "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
         expect(sut, toRetrieve: .failure(anyError()))
     }
     
     func test_retrieve_hasNoSideEffectOnFailure() {
         let storeURL = testSpecificStoreURL()
         let sut = makeSUT(storeURL: storeURL)
-        try! "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
+        try? "invalid_data".write(to: storeURL, atomically: false, encoding: .utf8)
         expect(sut, toRetrieve: .failure(anyError()))
         expect(sut, toRetrieve: .failure(anyError()))
     }

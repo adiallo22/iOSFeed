@@ -8,6 +8,7 @@
 
 import Foundation
 import iOSFeed
+import CacheFeed
 
 func anyFeed() -> FeedImage {
     FeedImage(id: UUID(), description: "", location: "", image: anyURL())

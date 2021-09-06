@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import iOSFeed
+import CacheFeed
 
 class CoreDataFeedStoreTests: XCTestCase, FailableSpecs {
     
