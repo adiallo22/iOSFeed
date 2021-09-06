@@ -15,9 +15,10 @@ public class FeedImageCell: UITableViewCell {
 
     private let pinImage: UIImageView = {
         let view = UIImageView(image: UIImage(systemName: "pin.fill"))
+        view.tintColor = .lightGray
         view.snp.makeConstraints {
-            $0.height.equalTo(12)
-            $0.width.equalTo(12)
+            $0.height.equalTo(24)
+            $0.width.equalTo(24)
         }
         view.contentMode = .scaleAspectFill
         return view
@@ -51,6 +52,7 @@ public class FeedImageCell: UITableViewCell {
         view.backgroundColor = .lightGray
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
+        view.accessibilityIdentifier = "feed-image-view"
         view.snp.makeConstraints {
             $0.height.equalTo(400).priority(.high)
         }
@@ -68,6 +70,7 @@ public class FeedImageCell: UITableViewCell {
     private(set) public lazy var feedImageRetryButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "arrow.clockwise"), for: .normal)
+        button.tintColor = .white
         button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -75,6 +78,7 @@ public class FeedImageCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         layout()
+        accessibilityIdentifier = "feed-image-cell"
     }
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -88,7 +92,7 @@ public class FeedImageCell: UITableViewCell {
         
         contentView.addSubview(feedImageRetryButton)
         feedImageRetryButton.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.center.equalTo(feedImageView)
         }
     }
         

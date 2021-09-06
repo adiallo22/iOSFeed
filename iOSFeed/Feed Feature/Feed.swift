@@ -21,7 +21,3 @@ public struct FeedImage: Decodable, Equatable {
         self.image = image
     }
 }
-
-struct Root: Decodable {
-    var items: [RemoteFeedImage]
-}
