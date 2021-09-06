@@ -8,6 +8,7 @@
 
 import XCTest
 import iOSFeed
+import Remote_Feed_API
 
 class LoadFeedImageDataFromRemoteUseCaseTests: XCTestCase {
     

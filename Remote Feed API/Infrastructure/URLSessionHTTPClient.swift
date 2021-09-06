@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import iOSFeed
 
 struct UnexpectedError: Error { }
 
@@ -39,10 +40,6 @@ public final class URLSessionHTTPClient: HTTPClient {
         }
         task.resume()
         return URLSessionTaskWrapper(wrapper: task)
-    }
-    
-    public func get(from url: URL, completion: @escaping (HTTPResponse) -> Void) {
-        
     }
     
 }

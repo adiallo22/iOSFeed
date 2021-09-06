@@ -19,3 +19,7 @@ class FeedItemsMapper {
     }
     
 }
+
+struct Root: Decodable {
+    var items: [RemoteFeedImage]
+}

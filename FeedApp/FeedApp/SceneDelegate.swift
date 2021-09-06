@@ -7,6 +7,7 @@
 
 import UIKit
 import EssentialFeediOS
+import Remote_Feed_API
 import iOSFeed
 import CoreData
 

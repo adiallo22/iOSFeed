@@ -7,6 +7,7 @@
 //
 
 import iOSFeed
+import Remote_Feed_API
 
 final class HTTPClientSpy: HTTPClient {
     private var messages = [(url: URL, completion: (HTTPResponse) -> Void)]()
