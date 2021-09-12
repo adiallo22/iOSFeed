@@ -72,31 +72,9 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C06CCE7526483E5300DE4E7D"
-               BuildableName = "CacheIntegrationTests.xctest"
-               BlueprintName = "CacheIntegrationTests"
-               ReferencedContainer = "container:iOSFeed.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "C020292A265DD2A700CBB558"
                BuildableName = "EssentialFeediOSTests.xctest"
                BlueprintName = "EssentialFeediOSTests"
-               ReferencedContainer = "container:iOSFeed.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C03C4E1725EDE5C600D22C84"
-               BuildableName = "iOSFeedEndToEndTests.xctest"
-               BlueprintName = "iOSFeedEndToEndTests"
                ReferencedContainer = "container:iOSFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -119,17 +97,6 @@
                BlueprintIdentifier = "C09C7F0126ADFC1000A73866"
                BuildableName = "FeedAppTests.xctest"
                BlueprintName = "FeedAppTests"
-               ReferencedContainer = "container:FeedApp/FeedApp.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C03C3A3626C03CD200B7C1F9"
-               BuildableName = "FeedAppUITests.xctest"
-               BlueprintName = "FeedAppUITests"
                ReferencedContainer = "container:FeedApp/FeedApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
