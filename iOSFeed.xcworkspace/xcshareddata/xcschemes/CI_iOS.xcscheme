@@ -83,21 +83,30 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C0EDA0EB25D38B0A00C1B9E6"
-               BuildableName = "iOSFeedTests.xctest"
-               BlueprintName = "iOSFeedTests"
-               ReferencedContainer = "container:iOSFeed.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "C09C7F0126ADFC1000A73866"
                BuildableName = "FeedAppTests.xctest"
                BlueprintName = "FeedAppTests"
                ReferencedContainer = "container:FeedApp/FeedApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C08F6B9E26E6C4930024E63A"
+               BuildableName = "CacheFeedTests.xctest"
+               BlueprintName = "CacheFeedTests"
+               ReferencedContainer = "container:iOSFeed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C08F6B6B26E6BB0E0024E63A"
+               BuildableName = "Remote Feed APITests.xctest"
+               BlueprintName = "Remote Feed APITests"
+               ReferencedContainer = "container:iOSFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
