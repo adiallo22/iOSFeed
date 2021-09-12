@@ -8,6 +8,7 @@
 import XCTest
 import iOSFeed
 import FeedApp
+import CacheFeed
 
 class FeedImageLoaderCacheDecoratorTests: XCTestCase, FeedDataLoaderTestCase {
     

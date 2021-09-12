@@ -73,6 +73,7 @@
 		C08F6BD026E6C80D0024E63A /* XCTestCase+MemoryLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C4E1025EC3E1C00D22C84 /* XCTestCase+MemoryLeak.swift */; };
 		C08F6BD126E6C80D0024E63A /* GlobalTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B4CE1261B557100C01557 /* GlobalTestHelpers.swift */; };
 		C08F6BEE26EE516A0024E63A /* FeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0964F5426768F6F00CB600A /* FeedImageDataLoader.swift */; };
+		C08F6BF026EE52360024E63A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C08F6BEF26EE52360024E63A /* SnapKit */; };
 		C0964F2F266D35BE00CB600A /* GlobalTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B4CE1261B557100C01557 /* GlobalTestHelpers.swift */; };
 		C0964F36266DAF3C00CB600A /* FeedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0964F35266DAF3C00CB600A /* FeedImageCell.swift */; };
 		C0964F3D2671A44000CB600A /* UIView+Shimmering.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0964F3C2671A44000CB600A /* UIView+Shimmering.swift */; };
@@ -89,7 +90,6 @@
 		C0BB3B4A268172C30090AF59 /* FeedLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B49268172C30090AF59 /* FeedLocalizationTests.swift */; };
 		C0BB3B512682BAB80090AF59 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B502682BAB80090AF59 /* String+Extension.swift */; };
 		C0BB3B582682CA740090AF59 /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BB3B572682CA740090AF59 /* MainQueueDispatchDecorator.swift */; };
-		C0ECF6CF26646C490031B013 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0ECF6CE26646C490031B013 /* SnapKit */; };
 		C0ECF72C26654C0E0031B013 /* FeedUIIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF72B26654C0E0031B013 /* FeedUIIntegrationTests.swift */; };
 		C0ECF73E266551840031B013 /* XCTestCase+MemoryLeak.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C4E1025EC3E1C00D22C84 /* XCTestCase+MemoryLeak.swift */; };
 		C0ECF7452665A1800031B013 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECF7442665A1800031B013 /* FeedViewController.swift */; };
@@ -297,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0964F68267693F900CB600A /* iOSFeed.framework in Frameworks */,
+				C08F6BF026EE52360024E63A /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +360,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0ECF6CF26646C490031B013 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +765,9 @@
 				C0964F6B267693F900CB600A /* PBXTargetDependency */,
 			);
 			name = EssentialFeediOS;
+			packageProductDependencies = (
+				C08F6BEF26EE52360024E63A /* SnapKit */,
+			);
 			productName = EssentialFeediOS;
 			productReference = C0202923265DD2A700CBB558 /* EssentialFeediOS.framework */;
 			productType = "com.apple.product-type.framework";
@@ -913,7 +916,6 @@
 			);
 			name = iOSFeed;
 			packageProductDependencies = (
-				C0ECF6CE26646C490031B013 /* SnapKit */,
 			);
 			productName = iOSFeed;
 			productReference = C0EDA0DD25D38AE700C1B9E6 /* iOSFeed.framework */;
@@ -1996,7 +1998,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C0ECF6CE26646C490031B013 /* SnapKit */ = {
+		C08F6BEF26EE52360024E63A /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C0ECF6CD26646C490031B013 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
