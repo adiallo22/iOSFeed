@@ -6,6 +6,7 @@
 //
 
 import iOSFeed
+import CacheFeed
 
 public final class FeedLoaderCacheDecorator: FeedLoader {
     let decoratee: FeedLoader
