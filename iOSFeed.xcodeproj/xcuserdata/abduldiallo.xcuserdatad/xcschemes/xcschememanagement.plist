@@ -12,22 +12,27 @@
 		<key>CacheFeed.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>31</integer>
 		</dict>
-		<key>CacheIntegrationTests.xcscheme_^#shared#^_</key>
+		<key>CacheFeedTests.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>36</integer>
 		</dict>
 		<key>EssentialFeediOS.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>4</integer>
 		</dict>
 		<key>Remote Feed API.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>30</integer>
+		</dict>
+		<key>Remote Feed APITests.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>35</integer>
 		</dict>
 		<key>SnapKitPlayground (Playground) 1.xcscheme</key>
 		<dict>
@@ -55,11 +60,6 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>iOSFeedEndToEndTests.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -84,6 +84,31 @@
 			<true/>
 		</dict>
 		<key>C06CCE7526483E5300DE4E7D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C08F6B6326E6BB0D0024E63A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C08F6B6B26E6BB0E0024E63A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C08F6B9626E6C4930024E63A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C08F6B9E26E6C4930024E63A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C0EDA0DC25D38AE700C1B9E6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
