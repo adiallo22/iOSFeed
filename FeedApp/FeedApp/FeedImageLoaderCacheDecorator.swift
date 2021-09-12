@@ -6,6 +6,7 @@
 //
 
 import iOSFeed
+import CacheFeed
 
 public final class FeedImageLoaderCacheDecorator: FeedImageDataLoader {
     private let decoratee: FeedImageDataLoader

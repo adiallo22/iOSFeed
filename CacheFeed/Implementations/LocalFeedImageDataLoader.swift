@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import iOSFeed
 
 public typealias ImageDataLoaderRESULT = Result<Data, Swift.Error>
 
