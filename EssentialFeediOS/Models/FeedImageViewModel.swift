@@ -9,7 +9,7 @@
 import Foundation
 import iOSFeed
 
-final class FeedImageViewModel<Image> {
+public final class FeedImageViewModel<Image> {
     typealias Observer<T> = (T) -> Void
     
     private var task: FeedImageDataLoaderTask?
@@ -31,7 +31,7 @@ final class FeedImageViewModel<Image> {
     var onImageLoadingStateChange: Observer<Bool>?
     var onshouldRetryImageLoadStateChange: Observer<Bool>?
 
-    init(model: FeedImage, imageLoader: FeedImageDataLoader, imageTransformer: @escaping (Data) -> Image?) {
+    public init(model: FeedImage, imageLoader: FeedImageDataLoader, imageTransformer: @escaping (Data) -> Image?) {
         self.model = model
         self.imageLoader = imageLoader
         self.imageTransformer = imageTransformer
