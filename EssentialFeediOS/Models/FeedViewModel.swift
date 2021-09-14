@@ -9,14 +9,14 @@
 import Foundation
 import iOSFeed
 
-final class FeedViewModel {
-    typealias Observer<T> = (T) -> Void
+public final class FeedViewModel {
+    public typealias Observer<T> = (T) -> Void
     private let feedLoader: FeedLoader
     
-    var onLoadingStateChange: Observer<Bool>?
-    var onFeedLoad: Observer<[FeedImage]>?
+    public var onLoadingStateChange: Observer<Bool>?
+    public var onFeedLoad: Observer<[FeedImage]>?
     
-    init(feedLoader: FeedLoader) {
+    public init(feedLoader: FeedLoader) {
         self.feedLoader = feedLoader
     }
     
