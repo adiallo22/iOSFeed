@@ -13,7 +13,7 @@ import CoreData
 import CacheFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
     
     private lazy var httpClient: HTTPClient = {
@@ -27,8 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var store: FeedStore & FeedImageDataStore = {
         let bundle = Bundle(for: CoreDataFeedStore.self)
         let localStoreURL = NSPersistentContainer
-                                .defaultDirectoryURL()
-                                .appendingPathComponent("FeedStore")
+            .defaultDirectoryURL()
+            .appendingPathComponent("FeedStore")
         let localStore = try! CoreDataFeedStore(storeURL: localStoreURL, bundle: bundle)
         return localStore
     }()
@@ -74,5 +74,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {
         localFeedLoader.validateCache { _ in }
     }
-
+    
 }
